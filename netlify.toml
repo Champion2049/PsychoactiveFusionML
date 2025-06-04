@@ -3,7 +3,7 @@
   # This prevents Netlify from trying to infer and run Node.js-based builds (like node-sass).
   command = ""
   publish = "templates"  # Directory containing your index.html
-  functions = "netlify/functions" # Directory for your Netlify Functions
+  functions = "./netlify/functions" # Directory for your Netlify Functions
 
 [functions]
   # The 'python_version' property has been removed.
