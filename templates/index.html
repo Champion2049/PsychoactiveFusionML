@@ -343,7 +343,7 @@
 
             try {
                 // Send data to Netlify Function
-                const response = await fetch('/.netlify/functions/predict', {
+                const response = await fetch('/.netlify/functions/predict.py', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
