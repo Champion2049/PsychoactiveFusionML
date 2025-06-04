@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, jsonify
 import joblib
 import os
 import numpy as np
-import pandas as pd # Import pandas for DataFrame creation
+import pandas as pd
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -13,11 +13,10 @@ app = Flask(__name__)
 FIRST_STAGE_MODELS_DIR = 'saved_models_usage'
 
 # Define the directory where your second-stage .joblib models are stored (Impulsive, SS regression)
-SECOND_STAGE_MODELS_DIR = 'trained_models' # As per your training script's MODEL_SAVE_DIR
+SECOND_STAGE_MODELS_DIR = 'trained_models'
 
 # --- Mappings for Input Parameters ---
 # These dictionaries map the user-friendly string inputs to their numerical 'Real' values.
-# These are used for the FIRST STAGE models.
 AGE_MAPPING = {
     "18-24": -0.95197,
     "25-34": -0.07854,
@@ -74,7 +73,6 @@ ALL_MAPPINGS = {
 }
 
 # Define the list of substances for consistent naming and extraction
-# This list must match the substances processed in your training script.
 substances_to_process_list = [
     'Alcohol', 'Amphete', 'Amyl', 'Benzos', 'Caff', 'Cannabis', 'Coke',
     'Crack', 'Ecstacy', 'Heroin', 'Ketamine', 'LegalH', 'LSD', 'Meth',
@@ -82,29 +80,21 @@ substances_to_process_list = [
 ]
 
 # Define the feature names for the FIRST STAGE models in the exact order expected.
-# This order MUST match the `all_features` list in your first training script's
-# `preprocessing_inputs_with_demographics` function.
 EXPECTED_FEATURE_ORDER_FIRST_STAGE = [
-    'Nscore', 'Escore', 'Ascore', 'Oscore', 'Cscore', # Numerical personality features
-    'Age', 'Gender', 'Education', 'Country', 'Ethinicity' # Categorical demographic features (after mapping)
+    'Nscore', 'Escore', 'Ascore', 'Oscore', 'Cscore',
+    'Age', 'Gender', 'Education', 'Country', 'Ethinicity'
 ]
 
 # Define the feature names for the SECOND STAGE models (Impulsive, SS) in the exact order expected.
-# This order MUST match the `features` list in your second training script's
-# `advanced_preprocessing` function.
-# IMPORTANT: Education and Ethinicity are expected as STRINGS here, as per the training script's
-# dynamic identification of categorical columns.
 EXPECTED_FEATURE_ORDER_SECOND_STAGE = [
-    'Nscore', 'Escore', 'Oscore', 'Ascore', 'Cscore', # Personality scores (numerical)
-    'Education', 'Age', 'Ethinicity' # Demographic features (Age is numerical, Education/Ethinicity are STRINGS)
-] + substances_to_process_list # Plus the 17 drug usage predictions (numerical)
+    'Nscore', 'Escore', 'Oscore', 'Ascore', 'Cscore',
+    'Education', 'Age', 'Ethinicity'
+] + substances_to_process_list
 
 # --- Model Loading Functions ---
 
 def load_first_stage_models(models_dir):
-    """
-    Loads all .joblib model pipeline files for drug usage classification.
-    """
+    """Loads all .joblib model pipeline files for drug usage classification."""
     models = {}
     if not os.path.exists(models_dir):
         print(f"Error: First-stage models directory '{models_dir}' not found. Please create it and place your .joblib files inside.")
@@ -144,9 +134,7 @@ def load_first_stage_models(models_dir):
     return models
 
 def load_second_stage_models(models_dir):
-    """
-    Loads .joblib model pipeline files for Impulsive and SS prediction.
-    """
+    """Loads .joblib model pipeline files for Impulsive and SS prediction."""
     models = {}
     if not os.path.exists(models_dir):
         print(f"Error: Second-stage models directory '{models_dir}' not found. Please create it and place your .joblib files inside.")
@@ -157,10 +145,9 @@ def load_second_stage_models(models_dir):
         if filename.endswith('.joblib'):
             target_name = None
             try:
-                # Expecting filenames like 'best_model_Impulsive_Random_Forest.joblib' or 'best_model_SS_XGBoost.joblib'
                 parts = filename.replace('.joblib', '').split('_')
                 if len(parts) >= 3 and parts[0] == 'best' and parts[1] == 'model':
-                    target_name = parts[2] # e.g., 'Impulsive' or 'SS'
+                    target_name = parts[2]
                     if target_name not in expected_targets:
                         print(f"Warning: Second-stage filename '{filename}' contains unexpected target '{target_name}'. Skipping.")
                         continue
@@ -190,9 +177,16 @@ second_stage_models = load_second_stage_models(SECOND_STAGE_MODELS_DIR)
 # --- Flask Routes ---
 
 @app.route('/')
-def index():
+def home():
     """
-    Renders the main input form for the classification model.
+    Renders the main home page.
+    """
+    return render_template('home.html')
+
+@app.route('/prediction_app')
+def prediction_app_page():
+    """
+    Renders the prediction application page.
     It passes information about whether models were loaded successfully,
     the names of the loaded models, and the mappings for dropdowns to the HTML template.
     """
@@ -207,25 +201,35 @@ def index():
             error_msg.append(f"No second-stage models found or loaded from '{SECOND_STAGE_MODELS_DIR}'.")
         
         return render_template(
-            'index.html',
+            'prediction_app.html',
             error=" ".join(error_msg) + " Please ensure the correct directories exist and contain your .joblib pipeline files.",
             models_loaded=False,
             mappings=ALL_MAPPINGS
         )
     return render_template(
-        'index.html',
+        'prediction_app.html',
         models_loaded=True,
         model_names=sorted(first_stage_models.keys()), # Display first stage model names
         mappings=ALL_MAPPINGS
     )
 
+@app.route('/psychoactive_classification') # Renamed route
+def psychoactive_classification_page(): # Renamed function
+    """
+    Renders the psychoactive drug classification page (formerly empty_page).
+    """
+    # Assuming the user renamed empty_page.html to regression_app.html
+    return render_template('regression_app.html') # Corrected template name to match user's rename
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     """
-    Handles the prediction request from the HTML form.
+    Handles the prediction request from the prediction application form.
     It retrieves the input scores and categorical selections,
-    maps categorical selections to numerical values for first stage,
-    and passes string categorical values for second stage if needed.
+    maps categorical selections to numerical values,
+    creates a Pandas DataFrame with appropriate column names,
+    and then passes this DataFrame to the loaded ML pipelines for prediction.
     """
     if not first_stage_models or not second_stage_models:
         error_msg = []
@@ -234,7 +238,7 @@ def predict():
         if not second_stage_models:
             error_msg.append(f"Prediction failed: No second-stage models are loaded from '{SECOND_STAGE_MODELS_DIR}'.")
         return render_template(
-            'index.html',
+            'prediction_app.html',
             error=" ".join(error_msg),
             models_loaded=False,
             mappings=ALL_MAPPINGS
@@ -259,7 +263,6 @@ def predict():
         # and for numerical features in the SECOND STAGE.
         age_val = AGE_MAPPING.get(age_str)
         gender_val = GENDER_MAPPING.get(gender_str)
-        # education_val and ethinicity_val are NOT used for second stage input directly
         country_val = COUNTRY_MAPPING.get(country_str)
         
         # Validate if mappings returned None (i.e., invalid selection)
@@ -269,7 +272,7 @@ def predict():
 
     except ValueError as e:
         return render_template(
-            'index.html',
+            'prediction_app.html',
             error=f"Invalid input: {e}. Please ensure all scores are numeric and selections are valid.",
             models_loaded=True,
             model_names=sorted(first_stage_models.keys()),
@@ -282,7 +285,7 @@ def predict():
         )
     except KeyError as e:
         return render_template(
-            'index.html',
+            'prediction_app.html',
             error=f"Missing input field: {e}. Please ensure all required fields are provided.",
             models_loaded=True,
             model_names=sorted(first_stage_models.keys()),
@@ -294,14 +297,16 @@ def predict():
     # All values here are numerical (mapped from strings for categorical inputs).
     input_data_first_stage = {
         'Nscore': [float(n_score)], 'Escore': [float(e_score)], 'Ascore': [float(a_score)], 'Oscore': [float(o_score)], 'Cscore': [float(c_score)],
-        'Age': [float(age_val)], 'Gender': [float(gender_val)], 'Education': [float(EDUCATION_MAPPING.get(education_str))],
-        'Country': [float(country_val)], 'Ethinicity': [float(ETHINICITY_MAPPING.get(ethinicity_str))]
+        'Age': [float(age_val)], 'Gender': [float(gender_val)],
+        'Education': [float(EDUCATION_MAPPING.get(education_str))], # Mapped to numerical for first stage
+        'Country': [float(country_val)],
+        'Ethinicity': [float(ETHINICITY_MAPPING.get(ethinicity_str))] # Mapped to numerical for first stage
     }
     try:
         input_df_first_stage = pd.DataFrame(input_data_first_stage, columns=EXPECTED_FEATURE_ORDER_FIRST_STAGE)
     except Exception as e:
         return render_template(
-            'index.html',
+            'prediction_app.html',
             error=f"Error creating first-stage input DataFrame: {e}. Ensure feature order and names match.",
             models_loaded=True, model_names=sorted(first_stage_models.keys()), mappings=ALL_MAPPINGS,
             n_score=n_score, e_score=e_score, a_score=a_score, o_score=o_score, c_score=c_score,
@@ -342,11 +347,10 @@ def predict():
         'Ascore': [float(a_score)],
         'Cscore': [float(c_score)],
         'Education': [education_str], # Passed as string
-        'Age': [float(age_val)], # Passed as numerical
+        'Age': [float(AGE_MAPPING.get(age_str))], # Passed as numerical, use mapped value
         'Ethinicity': [ethinicity_str] # Passed as string
     }
     
-    # Add drug predictions to the second stage input data
     for drug in substances_to_process_list:
         # Use .get() with a default value (e.g., 0) in case a drug prediction failed (-1) or is missing
         # Ensure the value is cast to float, as these are numerical drug usage indicators.
@@ -394,7 +398,7 @@ def predict():
 
     # Render the template again, passing all input values and the prediction results
     return render_template(
-        'index.html',
+        'prediction_app.html',
         predictions=predictions, # First stage predictions
         impulsive_prediction=f"{impulsive_prediction:.4f}" if impulsive_prediction is not None else "N/A",
         ss_prediction=f"{ss_prediction:.4f}" if ss_prediction is not None else "N/A",
@@ -407,15 +411,10 @@ def predict():
 
 # --- Main execution block ---
 if __name__ == '__main__':
-    # IMPORTANT: You MUST run your provided training scripts to generate the actual .joblib model files.
-    # First-stage models (e.g., model_Drug_1.joblib) must be placed in the 'saved_models_usage' directory.
-    # Second-stage models (e.g., best_model_Impulsive_Random_Forest.joblib) must be placed in the 'trained_models' directory.
-
     print("\n" + "="*80)
     print("CRITICAL: Ensure your model directories are correctly set up and contain your .joblib files.")
     print(f"First-stage models expected in: '{FIRST_STAGE_MODELS_DIR}'")
     print(f"Second-stage models expected in: '{SECOND_STAGE_MODELS_DIR}'")
     print("="*80 + "\n")
 
-    # Run the Flask application in debug mode.
     app.run(debug=True)

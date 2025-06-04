@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychoactive Fusion ML - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import for a more modern feel */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Use Poppins for body text */
+            background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%); /* Deeper, more vibrant purple gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+            color: #333; /* Default text color */
+            position: relative; /* Needed for absolute positioning of theme toggle */
+        }
+        /* Dark mode body background */
+        body.dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Darker, more subdued gradient */
+            color: #e0e0e0; /* Lighter text for dark mode */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.98); /* Less transparent, more solid look */
+            padding: 4rem; /* Increased padding */
+            border-radius: 1.5rem; /* Rounded corners */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Stronger, deeper shadow */
+            max-width: 900px; /* Wider container for better content flow */
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem; /* More space between major sections */
+            animation: slideInUp 1s ease-out forwards; /* Slide in from bottom */
+            overflow: hidden; /* Ensure content doesn't overflow rounded corners */
+            position: relative;
+            z-index: 1; /* Ensure container is above background effects */
+        }
+        /* Dark mode container */
+        body.dark .container {
+            background-color: rgba(30, 30, 45, 0.98); /* Darker container in dark mode */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Background animated circles for abstract effect */
+        .background-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05); /* Subtle white circles */
+            animation: moveCircles 15s linear infinite;
+        }
+        /* Dark mode circles */
+        body.dark .circle {
+            background: rgba(255, 255, 255, 0.02); /* Even more subtle in dark mode */
+        }
+
+        .circle:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 20%; animation-duration: 18s; }
+        .circle:nth-child(2) { width: 150px; height: 150px; top: 50%; right: 15%; animation-duration: 22s; }
+        .circle:nth-child(3) { width: 80px; height: 80px; bottom: 5%; left: 40%; animation-duration: 16s; }
+        .circle:nth-child(4) { width: 120px; height: 120px; top: 30%; left: 5%; animation-duration: 20s; }
+        .circle:nth-child(5) { width: 90px; height: 90px; bottom: 20%; right: 30%; animation-duration: 17s; }
+
+        @keyframes moveCircles {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            25% { transform: translate(20px, -20px) scale(1.1); opacity: 0.6; }
+            50% { transform: translate(0, 40px) scale(1.2); opacity: 0.7; }
+            75% { transform: translate(-30px, -10px) scale(1.1); opacity: 0.6; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif; /* Use Montserrat for headings */
+            font-size: 5.5rem; /* Even Bigger heading */
+            font-weight: 800; /* Extra bold */
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.07em; /* Tighter letter spacing */
+            line-height: 0.9; /* Adjust line height for large text */
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+        }
+        /* Dark mode heading */
+        body.dark h1 {
+            color: #e0e0e0;
+            text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem; /* Larger subtitle */
+            font-weight: 600;
+            color: #6a0dad; /* A slightly darker purple for contrast */
+            margin-bottom: 2.5rem; /* More spacing */
+        }
+        /* Dark mode subtitle */
+        body.dark .subtitle {
+            color: #b388ff; /* Lighter purple for dark mode */
+        }
+
+        p {
+            font-size: 1.3rem; /* Larger paragraph text */
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 3rem; /* More spacing */
+            max-width: 700px; /* Limit paragraph width for readability */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Dark mode paragraph */
+        body.dark p {
+            color: #c0c0c0;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem; /* More space between buttons */
+            margin-top: 2rem;
+        }
+        .button-group a {
+            background: linear-gradient(45deg, #8e2de2 0%, #4a00e0 100%); /* Gradient buttons */
+            color: white;
+            padding: 1.5rem 3rem; /* Even larger buttons */
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1.4rem; /* Larger font size */
+            text-decoration: none;
+            transition: all 0.3s ease-in-out; /* Smooth transition for all properties */
+            display: block;
+            box-shadow: 0 6px 15px rgba(74, 0, 224, 0.4); /* Stronger button shadow */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .button-group a:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2); /* Light overlay for hover effect */
+            transition: all 0.3s ease-in-out;
+            z-index: -1;
+        }
+        .button-group a:hover:before {
+            left: 0;
+        }
+        .button-group a:hover {
+            transform: translateY(-5px) scale(1.02); /* More pronounced lift and slight scale */
+            box-shadow: 0 12px 25px rgba(74, 0, 224, 0.6); /* Even stronger shadow on hover */
+            border: 2px solid rgba(255, 255, 255, 0.5); /* Subtle white border on hover */
+        }
+        .button-group a span {
+            font-size: 1rem; /* Adjust span size */
+            font-weight: 400; /* Lighter weight for description */
+            opacity: 0.9;
+        }
+        /* Dark mode buttons */
+        body.dark .button-group a {
+            background: linear-gradient(45deg, #3a0090 0%, #6a0dad 100%); /* Darker gradient for buttons */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        }
+        body.dark .button-group a:hover {
+            background: linear-gradient(45deg, #6a0dad 0%, #3a0090 100%);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+
+        .hero-image, .new-content-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 1.5rem; /* More rounded corners for images */
+            margin-bottom: 2.5rem; /* Space below images */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Deeper shadow for images */
+            border: 2px solid #8e2de2; /* Subtle border matching gradient */
+        }
+        /* Dark mode images */
+        body.dark .hero-image, body.dark .new-content-image {
+            border: 2px solid #6a0dad; /* Darker border for images */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .new-content-image { /* New class for the added image */
+            margin-top: 3rem; /* Space above new image */
+        }
+
+        /* Theme toggle button */
+        #theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #333; /* Default text color for light mode */
+            padding: 0.6rem 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            z-index: 20; /* Ensure it's on top */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        #theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        body.dark #theme-toggle {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e0e0; /* Lighter text for dark mode */
+        }
+        body.dark #theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        /* Sun/Moon icon styling */
+        .icon-sun, .icon-moon {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+        }
+
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .button-group {
+                flex-direction: row;
+                justify-content: center;
+                gap: 2.5rem; /* More space between horizontal buttons */
+            }
+            .button-group a {
+                flex: 1;
+                max-width: 380px; /* Larger max width for buttons */
+            }
+        }
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 3.5rem; /* Adjust for smaller screens */
+            }
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            p {
+                font-size: 1.1rem;
+            }
+            .container {
+                padding: 2.5rem;
+            }
+            .button-group a {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+            .button-group a span {
+                font-size: 0.85rem;
+            }
+            #theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="theme-toggle">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon" style="display: none;">🌙</span>
+        <span class="toggle-text">Dark Mode</span>
+    </button>
+
+    <div class="background-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <div class="container">
+        <img src="https://placehold.co/800x250/4a00e0/ffffff?text=PSYCHOACTIVE+FUSION+ML" alt="Psychoactive Fusion ML Banner" class="hero-image">
+        <p class="subtitle">Unveiling the Mind: Personality, Prediction, and Substances</p>
+        <p>Step into an analytical journey where we explore the intricate connections between individual personality traits and patterns of substance use. Our platform provides cutting-edge tools to gain deeper insights into these complex relationships. Discover our core functionalities:</p>
+        
+        <img src="https://www.rapiddetox.com/wp-content/uploads/2022/04/science-behind-drug-addiction.jpg" alt="Exploring Connections" class="new-content-image">
+
+        <div class="button-group">
+            <a href="/prediction_app">
+                <span class="block text-2xl font-bold mb-1">Drug Usage & Personality Prediction</span>
+                <span class="block text-sm font-normal opacity-80">Explore individual risk factors and trait correlations</span>
+            </a>
+            <a href="/psychoactive_classification">
+                <span class="block text-2xl font-bold mb-1">Psychoactive Drug Classification</span>
+                <span class="block text-sm font-normal opacity-80">Identify psychoactive properties of various substances</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const sunIcon = document.querySelector('.icon-sun');
+        const moonIcon = document.querySelector('.icon-moon');
+        const toggleText = document.querySelector('.toggle-text');
+
+        // Function to set the theme
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline-block';
+                toggleText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                sunIcon.style.display = 'inline-block';
+                moonIcon.style.display = 'none';
+                toggleText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference on load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Default to system preference if no theme is saved
+            setTheme('dark');
+        } else {
+            setTheme('light'); // Default to light mode
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark')) {
+                setTheme('light');
+            } else {
+                setTheme('dark');
+            }
+        });
+    </script>
+</body>
+</html>

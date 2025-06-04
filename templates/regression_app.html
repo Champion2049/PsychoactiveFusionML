@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psychoactive Drug Classification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import for a more modern feel */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Use Poppins for body text */
+            background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%); /* Deeper, more vibrant purple gradient */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the start to prevent vertical centering issues on long content */
+            min-height: 100vh; /* Ensure full viewport height */
+            padding: 2rem 1rem; /* Add padding for small screens */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            color: #333; /* Default text color */
+            position: relative; /* Needed for absolute positioning of the back button and background circles */
+            overflow: hidden; /* Hide overflowing circles */
+            transition: background 0.5s ease, color 0.5s ease; /* Added for smooth theme transition */
+        }
+        /* Dark mode body background */
+        body.dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Darker, more subdued gradient */
+            color: #e0e0e0; /* Lighter text for dark mode */
+        }
+
+        /* Background animated circles for abstract effect - MATCHING HOME.HTML */
+        .background-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05); /* Subtle white circles */
+            animation: moveCircles 15s linear infinite;
+        }
+        /* Dark mode circles */
+        body.dark .circle {
+            background: rgba(255, 255, 255, 0.02); /* Even more subtle in dark mode */
+        }
+
+        .circle:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 20%; animation-duration: 18s; }
+        .circle:nth-child(2) { width: 150px; height: 150px; top: 50%; right: 15%; animation-duration: 22s; }
+        .circle:nth-child(3) { width: 80px; height: 80px; bottom: 5%; left: 40%; animation-duration: 16s; }
+        .circle:nth-child(4) { width: 120px; height: 120px; top: 30%; left: 5%; animation-duration: 20s; }
+        .circle:nth-child(5) { width: 90px; height: 90px; bottom: 20%; right: 30%; animation-duration: 17s; }
+
+        @keyframes moveCircles {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            25% { transform: translate(20px, -20px) scale(1.1); opacity: 0.6; }
+            50% { transform: translate(0, 40px) scale(1.2); opacity: 0.7; }
+            75% { transform: translate(-30px, -10px) scale(1.1); opacity: 0.6; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.98); /* Less transparent, more solid look */
+            padding: 4rem; /* Increased padding */
+            border-radius: 1.5rem; /* Rounded corners */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Stronger, deeper shadow */
+            max-width: 800px; /* Wider container */
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem; /* More space between elements */
+            animation: slideInUp 1s ease-out forwards; /* Slide in from bottom */
+            position: relative;
+            z-index: 1; /* Ensure container is above background effects */
+        }
+        /* Dark mode container */
+        body.dark .container {
+            background-color: rgba(30, 30, 45, 0.98); /* Darker container in dark mode */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Styling for the heading box, similar to prediction_app.html */
+        .heading-box {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); /* Gradient background for heading box */
+            padding: 2.5rem; /* Padding inside the box */
+            border-radius: 1.5rem; /* Rounded corners for the box */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Shadow for the box */
+            margin-bottom: 2.5rem; /* Space below the heading box */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white; /* White text for contrast on dark background */
+        }
+        /* Dark mode heading box */
+        body.dark .heading-box {
+            background: linear-gradient(135deg, #3a0090 0%, #6a0dad 100%); /* Darker gradient for heading box */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .heading-box h1 {
+            font-family: 'Montserrat', sans-serif; /* Use Montserrat for headings */
+            font-size: 3.5rem; /* Larger heading */
+            font-weight: 800; /* Extra bold */
+            color: white; /* White color for heading */
+            margin-bottom: 0.5rem; /* Space below heading */
+            letter-spacing: -0.05em;
+            line-height: 1.1;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+        .heading-box .subtitle { /* Style for subtitle within heading box */
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            margin-bottom: 0; /* No bottom margin, handled by heading-box padding */
+        }
+        .heading-box .hero-image { /* Style for image within heading box */
+            max-width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem; /* Space below image */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        /* Dark mode image in heading box */
+        body.dark .heading-box .hero-image {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        p {
+            font-size: 1.3rem; /* Larger paragraph text */
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 2.5rem; /* More spacing */
+            max-width: 700px; /* Limit paragraph width for readability */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Dark mode paragraph */
+        body.dark p {
+            color: #c0c0c0;
+        }
+
+        .placeholder-data {
+            background-color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: left;
+            font-family: 'Fira Code', monospace; /* A nice monospace font */
+            color: #2d3748;
+            white-space: pre-wrap; /* Preserve whitespace and wrap text */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1); /* Inner shadow */
+            border: 1px solid #cbd5e0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        /* Dark mode placeholder data */
+        body.dark .placeholder-data {
+            background-color: #2a2a3a;
+            border-color: #444;
+            color: #e0e0e0;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-button {
+            position: absolute; /* Position relative to the nearest positioned ancestor (body) */
+            top: 2rem; /* Distance from the top */
+            left: 2rem; /* Distance from the left */
+            background: linear-gradient(45deg, #a78bfa 0%, #8b5cf6 100%); /* Gradient back button */
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            display: inline-block;
+            z-index: 10; /* Ensure it's above other content */
+            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.3);
+        }
+        /* Dark mode back button */
+        body.dark .back-button {
+            background: linear-gradient(45deg, #6a0dad 0%, #3a0090 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .back-button:hover {
+            background: linear-gradient(45deg, #8b5cf6 0%, #a78bfa 100%); /* Reverse gradient on hover */
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(139, 92, 246, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        /* Dark mode back button hover */
+        body.dark .back-button:hover {
+            background: linear-gradient(45deg, #3a0090 0%, #6a0dad 100%);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Theme toggle button */
+        #theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.8); /* More opaque for light mode */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #333; /* Default text color for light mode */
+            padding: 0.6rem 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            z-index: 20; /* Ensure it's on top */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: max-content; /* Fit content */
+            max-width: 160px; /* Constrain max width */
+        }
+        #theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        body.dark #theme-toggle {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e0e0; /* Lighter text for dark mode */
+        }
+        body.dark #theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        /* Sun/Moon icon styling */
+        .icon-sun, .icon-moon {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            p {
+                font-size: 1.1rem;
+            }
+            .container {
+                padding: 2.5rem;
+            }
+            .back-button {
+                top: 1rem; /* Adjust for smaller screens */
+                left: 1rem;
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            #theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+                max-width: 140px; /* Smaller max width for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-button">Go Back to Home</a>
+    <button id="theme-toggle">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon" style="display: none;">🌙</span>
+        <span class="toggle-text">Dark Mode</span>
+    </button>
+    <div class="background-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <div class="container">
+        <div class="heading-box">
+            <h1>Psychoactive Drug Classification</h1>
+            <p class="subtitle">An overview of substance properties and effects.</p>
+        </div>
+        <p>This section is dedicated to classifying substances based on their psychoactive properties. While the classification model is under development, you can explore some placeholder information about the types of data we might analyze.</p>
+        <div class="placeholder-data">
+            Potential Data Points for Classification:
+            - Chemical Structure: [Placeholder SMILES String]
+            - Receptor Binding Affinity: [Placeholder Value] nM
+            - Known Effects: [Placeholder List of Effects]
+            - Legal Status: [Placeholder Status]
+            - Historical Usage: [Placeholder Context]
+            - Psychoactive Index: [Placeholder Score 0-10]
+        </div>
+    </div>
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const sunIcon = document.querySelector('.icon-sun');
+        const moonIcon = document.querySelector('.icon-moon');
+        const toggleText = document.querySelector('.toggle-text');
+
+        // Function to set the theme
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline-block';
+                toggleText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                sunIcon.style.display = 'inline-block';
+                moonIcon.style.display = 'none';
+                toggleText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference on load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Default to system preference if no theme is saved
+            setTheme('dark');
+        } else {
+            setTheme('light'); // Default to light mode
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark')) {
+                setTheme('light');
+            } else {
+                setTheme('dark');
+            }
+        });
+    </script>
+</body>
+</html>

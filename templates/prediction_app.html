@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drug Classification & Personality Prediction</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import for a more modern feel */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Use Poppins for body text */
+            background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%); /* Deeper, more vibrant purple gradient */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the start to prevent vertical centering issues on long content */
+            min-height: 100vh; /* Ensure full viewport height */
+            padding: 2rem 1rem; /* Add padding for small screens */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            color: #333; /* Default text color */
+            position: relative; /* Needed for absolute positioning of the back button and theme toggle */
+            /* Removed overflow: hidden; to allow scrolling */
+            transition: background 0.5s ease, color 0.5s ease; /* Added for smooth theme transition */
+        }
+        /* Dark mode body background */
+        body.dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Darker, more subdued gradient */
+            color: #e0e0e0; /* Lighter text for dark mode */
+        }
+
+        /* Background animated circles for abstract effect - MATCHING HOME.HTML */
+        .background-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Keep overflow hidden here to contain circles */
+            z-index: 0;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05); /* Subtle white circles */
+            animation: moveCircles 15s linear infinite;
+        }
+        /* Dark mode circles */
+        body.dark .circle {
+            background: rgba(255, 255, 255, 0.02); /* Even more subtle in dark mode */
+        }
+
+        .circle:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 20%; animation-duration: 18s; }
+        .circle:nth-child(2) { width: 150px; height: 150px; top: 50%; right: 15%; animation-duration: 22s; }
+        .circle:nth-child(3) { width: 80px; height: 80px; bottom: 5%; left: 40%; animation-duration: 16s; }
+        .circle:nth-child(4) { width: 120px; height: 120px; top: 30%; left: 5%; animation-duration: 20s; }
+        .circle:nth-child(5) { width: 90px; height: 90px; bottom: 20%; right: 30%; animation-duration: 17s; }
+
+        @keyframes moveCircles {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            25% { transform: translate(20px, -20px) scale(1.1); opacity: 0.6; }
+            50% { transform: translate(0, 40px) scale(1.2); opacity: 0.7; }
+            75% { transform: translate(-30px, -10px) scale(1.1); opacity: 0.6; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.98); /* Less transparent, more solid look */
+            padding: 3.5rem; /* Increased padding */
+            border-radius: 1.5rem; /* Rounded corners */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Stronger, deeper shadow */
+            max-width: 900px; /* Wider container for better content flow */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem; /* More space between sections */
+            animation: slideInUp 1s ease-out forwards; /* Slide in from bottom */
+            overflow: hidden; /* Ensure content doesn't overflow rounded corners */
+            position: relative;
+            z-index: 1; /* Ensure container is above background effects */
+        }
+        /* Dark mode container */
+        body.dark .container {
+            background-color: rgba(30, 30, 45, 0.98); /* Darker container in dark mode */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Styling for the heading box, similar to home.html container */
+        .heading-box {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); /* Gradient background for heading box */
+            padding: 2.5rem; /* Padding inside the box */
+            border-radius: 1.5rem; /* Rounded corners for the box */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Shadow for the box */
+            margin-bottom: 2.5rem; /* Space below the heading box */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white; /* White text for contrast on dark background */
+        }
+        /* Dark mode heading box */
+        body.dark .heading-box {
+            background: linear-gradient(135deg, #3a0090 0%, #6a0dad 100%); /* Darker gradient for heading box */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .heading-box h1 {
+            font-family: 'Montserrat', sans-serif; /* Use Montserrat for headings */
+            font-size: 3.5rem; /* Larger heading */
+            font-weight: 800; /* Extra bold */
+            color: white; /* White color for heading */
+            margin-bottom: 0.5rem; /* Space below heading */
+            letter-spacing: -0.05em;
+            line-height: 1.1;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+        .heading-box .subtitle { /* New style for subtitle within heading box */
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            margin-bottom: 0; /* No bottom margin, handled by heading-box padding */
+        }
+        .heading-box .hero-image { /* Style for image within heading box */
+            max-width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem; /* Space below image */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        /* Dark mode image in heading box */
+        body.dark .heading-box .hero-image {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem; /* Larger sub-heading */
+            font-weight: 700;
+            color: #6a0dad; /* A slightly darker purple for contrast */
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        /* Dark mode h2 */
+        body.dark h2 {
+            color: #b388ff;
+        }
+
+        label {
+            font-weight: 600; /* Semi-bold labels */
+            color: #4a5568; /* Grayish text for labels */
+            margin-bottom: 0.5rem;
+            display: block; /* Make labels block elements for better spacing */
+        }
+        /* Dark mode labels */
+        body.dark label {
+            color: #c0c0c0;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 0.9rem 1.2rem; /* More padding */
+            border: 1px solid #cbd5e0; /* Light gray border */
+            border-radius: 0.75rem; /* Rounded input fields */
+            font-size: 1.1rem; /* Larger font size */
+            color: #2d3748; /* Dark text for input */
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            background-color: white; /* Ensure select has white background */
+            appearance: none; /* Remove default select arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem; /* Make space for custom arrow */
+        }
+        /* Dark mode inputs */
+        body.dark input[type="number"], body.dark select {
+            background-color: #333; /* Darker background */
+            border-color: #555; /* Darker border */
+            color: #e0e0e0; /* Lighter text */
+        }
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #8e2de2; /* Deeper purple border on focus */
+            box-shadow: 0 0 0 4px rgba(142, 45, 226, 0.3); /* More prominent shadow on focus */
+        }
+        /* Dark mode input focus */
+        body.dark input[type="number"]:focus, body.dark select:focus {
+            border-color: #b388ff;
+            box-shadow: 0 0 0 4px rgba(179, 136, 255, 0.3);
+        }
+
+        button {
+            background: linear-gradient(45deg, #8e2de2 0%, #4a00e0 100%); /* Gradient button */
+            color: white;
+            padding: 1.2rem 2.5rem; /* Larger button */
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            width: 100%; /* Full width button */
+            box-shadow: 0 6px 15px rgba(74, 0, 224, 0.4); /* Stronger button shadow */
+        }
+        /* Dark mode button */
+        body.dark button {
+            background: linear-gradient(45deg, #3a0090 0%, #6a0dad 100%); /* Darker gradient for buttons */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        }
+        button:hover {
+            background: linear-gradient(45deg, #4a00e0 0%, #8e2de2 100%); /* Reverse gradient on hover */
+            transform: translateY(-3px) scale(1.02); /* More pronounced lift and slight scale */
+            box-shadow: 0 12px 25px rgba(74, 0, 224, 0.6); /* Even stronger shadow on hover */
+            border: 2px solid rgba(255, 255, 255, 0.5); /* Subtle white border on hover */
+        }
+        /* Dark mode button hover */
+        body.dark button:hover {
+            background: linear-gradient(45deg, #6a0dad 0%, #3a0090 100%);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .message-box {
+            padding: 1.2rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+            font-size: 1.05rem;
+        }
+        /* Dark mode message boxes */
+        body.dark .message-box.error {
+            background-color: #4a1c1c;
+            color: #ff8888;
+            border-color: #884444;
+        }
+        body.dark .message-box.info {
+            background-color: #1c2c4a;
+            color: #88bbff;
+            border-color: #446688;
+        }
+
+        .results-section {
+            margin-top: 2.5rem; /* More space */
+            border-top: 1px solid #e2e8f0; /* Light gray separator */
+            padding-top: 2.5rem;
+        }
+        /* Dark mode results section separator */
+        body.dark .results-section {
+            border-color: #555;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Slightly wider min for items */
+            gap: 1.8rem; /* More space between items */
+            margin-top: 2rem;
+        }
+        .prediction-item {
+            background-color: #f7fafc; /* Very light gray for prediction items */
+            padding: 1.5rem; /* More padding */
+            border-radius: 1rem; /* More rounded corners */
+            border: 1px solid #edf2f7; /* Subtle border */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Stronger shadow for items */
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        /* Dark mode prediction items */
+        body.dark .prediction-item {
+            background-color: #2a2a3a;
+            border-color: #444;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+        .prediction-item:hover {
+            transform: translateY(-5px); /* Lift on hover */
+        }
+        /* Dark mode prediction item hover */
+        body.dark .prediction-item:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .prediction-item strong {
+            font-size: 1.2rem; /* Larger drug name */
+            color: #2d3748;
+            margin-bottom: 0.75rem; /* More space */
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        /* Dark mode prediction item strong */
+        body.dark .prediction-item strong {
+            color: #e0e0e0;
+        }
+
+        .prediction-item span {
+            font-size: 1.05rem; /* Slightly larger prediction text */
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.6rem;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Small shadow for prediction text */
+        }
+        /* Dark mode prediction item span */
+        body.dark .prediction-item span {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .prediction-item .takes-drug {
+            background-color: #ef4444; /* Red for "Takes Drug" */
+        }
+        .prediction-item .does-not-take-drug {
+            background-color: #22c55e; /* Green for "Does Not Take Drug" */
+        }
+        /* Dark mode specific colors for takes/does not take drug */
+        body.dark .prediction-item .takes-drug {
+            background-color: #b33a3a;
+        }
+        body.dark .prediction-item .does-not-take-drug {
+            background-color: #1a8a42;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem; /* More space between input fields */
+        }
+        .current-inputs {
+            background-color: #e0f2fe;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            border: 1px solid #93c5fd;
+            color: #2563eb;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        /* Dark mode current inputs */
+        body.dark .current-inputs {
+            background-color: #1c2c4a;
+            border-color: #446688;
+            color: #88bbff;
+        }
+
+        .current-inputs span {
+            font-weight: 700;
+            color: #4a00e0; /* Highlighted input values */
+        }
+        /* Dark mode current inputs span */
+        body.dark .current-inputs span {
+            color: #b388ff;
+        }
+
+        .back-button {
+            position: absolute; /* Position relative to the nearest positioned ancestor (body) */
+            top: 2rem; /* Distance from the top */
+            left: 2rem; /* Distance from the left */
+            background: linear-gradient(45deg, #a78bfa 0%, #8b5cf6 100%); /* Gradient back button */
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            display: inline-block;
+            z-index: 10; /* Ensure it's above other content */
+            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.3);
+        }
+        /* Dark mode back button */
+        body.dark .back-button {
+            background: linear-gradient(45deg, #6a0dad 0%, #3a0090 100%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .back-button:hover {
+            background: linear-gradient(45deg, #8b5cf6 0%, #a78bfa 100%); /* Reverse gradient on hover */
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(139, 92, 246, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        /* Dark mode back button hover */
+        body.dark .back-button:hover {
+            background: linear-gradient(45deg, #3a0090 0%, #6a0dad 100%);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Theme toggle button */
+        #theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.8); /* More opaque for light mode */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #333; /* Default text color for light mode */
+            padding: 0.6rem 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+            z-index: 20; /* Ensure it's on top */
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: max-content; /* Fit content */
+            max-width: 160px; /* Constrain max width */
+        }
+        #theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        body.dark #theme-toggle {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e0e0; /* Lighter text for dark mode */
+        }
+        body.dark #theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        /* Sun/Moon icon styling */
+        .icon-sun, .icon-moon {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: middle;
+        }
+
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+                gap: 2rem; /* More gap */
+            }
+            .form-grid button {
+                grid-column: span 2;
+                width: auto;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 400px; /* Wider button */
+            }
+            .container {
+                padding: 4rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .form-grid {
+                grid-template-columns: repeat(3, 1fr); /* Three columns on even larger screens */
+            }
+            .form-grid button {
+                grid-column: span 3; /* Button spans three columns */
+            }
+        }
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+            .input-group {
+                margin-bottom: 1rem;
+            }
+            button {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+            .results-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+                gap: 1rem;
+            }
+            .prediction-item {
+                padding: 1rem;
+            }
+            .prediction-item strong {
+                font-size: 1.1rem;
+            }
+            .prediction-item span {
+                font-size: 0.95rem;
+            }
+            .current-inputs {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+            .back-button {
+                top: 1rem; /* Adjust for smaller screens */
+                left: 1rem;
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            #theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.9rem;
+                max-width: 140px; /* Smaller max width for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-button">Go Back to Home</a>
+    <button id="theme-toggle">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon" style="display: none;">🌙</span>
+        <span class="toggle-text">Dark Mode</span>
+    </button>
+    <div class="background-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    <div class="container">
+        <div class="heading-box"> <!-- Heading box with new styling -->
+            <h1>Drug Usage & Personality Prediction</h1>
+            <p class="subtitle">Enter your details to receive personalized insights.</p> <!-- Added subtitle -->
+        </div>
+
+        <!-- Message Box for errors or info -->
+        {% if error %}
+            <div class="message-box error">
+                {{ error }}
+            </div>
+        {% elif not models_loaded %}
+            <div class="message-box info">
+                Loading models failed. Please ensure your 'saved_models_usage' and 'trained_models' directories exist and contain .joblib files.
+            </div>
+        {% elif model_names %}
+            <div class="message-box info">
+                First-stage models loaded successfully for: {{ model_names | join(', ') }}
+            </div>
+        {% endif %}
+
+        <form action="/predict" method="post" class="space-y-6">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="n_score">Nscore:</label>
+                    <input type="number" id="n_score" name="n_score" step="any" required
+                           value="{{ n_score if n_score is not none else '' }}">
+                </div>
+                <div class="input-group">
+                    <label for="e_score">Escore:</label>
+                    <input type="number" id="e_score" name="e_score" step="any" required
+                           value="{{ e_score if e_score is not none else '' }}">
+                </div>
+                <div class="input-group">
+                    <label for="a_score">Ascore:</label>
+                    <input type="number" id="a_score" name="a_score" step="any" required
+                           value="{{ a_score if a_score is not none else '' }}">
+                </div>
+                <div class="input-group">
+                    <label for="o_score">Oscore:</label>
+                    <input type="number" id="o_score" name="o_score" step="any" required
+                           value="{{ o_score if o_score is not none else '' }}">
+                </div>
+                <div class="input-group">
+                    <label for="c_score">Cscore:</label>
+                    <input type="number" id="c_score" name="c_score" step="any" required
+                           value="{{ c_score if c_score is not none else '' }}">
+                </div>
+
+                <!-- New Input Parameters -->
+                <div class="input-group">
+                    <label for="age">Age:</label>
+                    <select id="age" name="age" required>
+                        <option value="">Select Age</option>
+                        {% for user_input, real_value in mappings.age.items() %}
+                            <option value="{{ user_input }}" {% if age_selected == user_input %}selected{% endif %}>
+                                {{ user_input }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        {% for user_input, real_value in mappings.gender.items() %}
+                            <option value="{{ user_input }}" {% if gender_selected == user_input %}selected{% endif %}>
+                                {{ user_input }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="education">Education:</label>
+                    <select id="education" name="education" required>
+                        <option value="">Select Education</option>
+                        {% for user_input, real_value in mappings.education.items() %}
+                            <option value="{{ user_input }}" {% if education_selected == user_input %}selected{% endif %}>
+                                {{ user_input }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="country">Country:</label>
+                    <select id="country" name="country" required>
+                        <option value="">Select Country</option>
+                        {% for user_input, real_value in mappings.country.items() %}
+                            <option value="{{ user_input }}" {% if country_selected == user_input %}selected{% endif %}>
+                                {{ user_input }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="ethinicity">Ethinicity:</label>
+                    <select id="ethinicity" name="ethinicity" required>
+                        <option value="">Select Ethinicity</option>
+                        {% for user_input, real_value in mappings.ethinicity.items() %}
+                            <option value="{{ user_input }}" {% if ethinicity_selected == user_input %}selected{% endif %}>
+                                {{ user_input }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Get Predictions</button>
+        </form>
+
+        <!-- Display Prediction Results -->
+        {% if predictions %}
+            <div class="results-section">
+                <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">First Stage: Drug Usage Predictions</h2>
+                <div class="current-inputs">
+                    Current Inputs:<br>
+                    Nscore: <span>{{ n_score }}</span>, Escore: <span>{{ e_score }}</span>, Ascore: <span>{{ a_score }}</span>, Oscore: <span>{{ o_score }}</span>, Cscore: <span>{{ c_score }}</span><br>
+                    Age: <span>{{ age_selected }}</span>, Gender: <span>{{ gender_selected }}</span>, Education: <span>{{ education_selected }}</span>, Country: <span>{{ country_selected }}</span>, Ethinicity: <span>{{ ethinicity_selected }}</span>
+                </div>
+                <div class="results-grid">
+                    {% for drug_name, prediction_result in predictions.items() %}
+                        <div class="prediction-item">
+                            <strong>{{ drug_name }}</strong>
+                            <span class="
+                                {% if 'Takes Drug' in prediction_result %} takes-drug
+                                {% elif 'Does Not Take Drug' in prediction_result %} does-not-take-drug
+                                {% else %} bg-gray-500 /* Default for error messages */
+                                {% endif %}
+                            ">
+                                {{ prediction_result }}
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if impulsive_prediction or ss_prediction or second_stage_errors %}
+            <div class="results-section">
+                <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Second Stage: Personality Trait Predictions</h2>
+                {% if second_stage_errors %}
+                    <div class="message-box error">
+                        {% for error in second_stage_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="text-center text-lg font-semibold text-gray-700 space-y-2">
+                    <p>Impulsive Score: <span class="text-blue-600">{{ impulsive_prediction }}</span></p>
+                    <p>SS (Sensation Seeking) Score: <span class="text-blue-600">{{ ss_prediction }}</span></p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const sunIcon = document.querySelector('.icon-sun');
+        const moonIcon = document.querySelector('.icon-moon');
+        const toggleText = document.querySelector('.toggle-text');
+
+        // Function to set the theme
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'inline-block';
+                toggleText.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark');
+                sunIcon.style.display = 'inline-block';
+                moonIcon.style.display = 'none';
+                toggleText.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Check for saved theme preference on load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Default to system preference if no theme is saved
+            setTheme('dark');
+        } else {
+            setTheme('light'); // Default to light mode
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark')) {
+                setTheme('light');
+            } else {
+                setTheme('dark');
+            }
+        });
+    </script>
+</body>
+</html>
