@@ -1,7 +1,7 @@
 [build]
   # Set a simple build command that does nothing for the frontend.
   # This prevents Netlify from trying to infer and run Node.js-based builds (like node-sass).
-  command = "echo 'No frontend build step required'"
+  # command = "echo 'No frontend build step required'"
   publish = "templates"  # Directory containing your index.html
   functions = "netlify/functions" # Directory for your Netlify Functions
 
