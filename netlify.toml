@@ -1,0 +1,20 @@
+[build]
+  publish = "templates"  # Directory containing your index.html
+  functions = "netlify/functions" # Directory for your Netlify Functions
+
+[functions]
+  # Specify the Python version for Netlify Functions
+  # Ensure this matches the Python version you used for training your models
+  python_version = "3.9" # Or "3.8", "3.10", "3.11" depending on your environment
+
+  # Required to include your model directories in the function's deployment package
+  # These paths are relative to the project root.
+  included_files = [
+    "saved_models_usage/**",  # Include all files in this directory and its subdirectories
+    "trained_models/**",      # Include all files in this directory and its subdirectories
+    "ml_logic.py"             # Include your ML logic file
+  ]
+
+# Optional: If you need to install specific Python packages for your functions
+# Netlify will look for a requirements.txt in the functions directory or root.
+# It's best to place it in the functions directory.
