@@ -3,11 +3,21 @@ import json
 import sys
 import os
 
-# Add the parent directory of 'netlify/functions' to the Python path
-# This allows importing 'ml_logic' from the root directory
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# --- Robust path manipulation for local and Netlify environments ---
+# Get the directory where the current script (predict.py) is located
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to the project root directory
+# This assumes ml_logic.py is one level up from netlify/functions/
+project_root_dir = os.path.abspath(os.path.join(current_script_dir, '..', '..'))
+
+# Add the project root to sys.path if it's not already there
+if project_root_dir not in sys.path:
+    sys.path.insert(0, project_root_dir)
+# --- End robust path manipulation ---
 
 # Import the prediction logic from ml_logic.py
+# This import will now look in the project_root_dir
 from ml_logic import predict_scores
 
 def handler(event, context):

@@ -13,7 +13,7 @@ app = Flask(__name__)
 FIRST_STAGE_MODELS_DIR = 'saved_models_usage'
 
 # Define the directory where your second-stage .joblib models are stored (Impulsive, SS regression)
-SECOND_STAGE_MODELS_DIR = 'saved_models_personality' # As per your training script's MODEL_SAVE_DIR
+SECOND_STAGE_MODELS_DIR = 'trained_models' # As per your training script's MODEL_SAVE_DIR
 
 # --- Mappings for Input Parameters ---
 # These dictionaries map the user-friendly string inputs to their numerical 'Real' values.
