@@ -335,13 +335,13 @@
                 body.classList.add('dark');
                 sunIcon.style.display = 'none';
                 moonIcon.style.display = 'inline-block';
-                toggleText.textContent = 'Light Mode';
+                toggleText.textContent = 'Dark Mode';
                 localStorage.setItem('theme', 'dark');
             } else {
                 body.classList.remove('dark');
                 sunIcon.style.display = 'inline-block';
                 moonIcon.style.display = 'none';
-                toggleText.textContent = 'Dark Mode';
+                toggleText.textContent = 'Light Mode';
                 localStorage.setItem('theme', 'light');
             }
         }
