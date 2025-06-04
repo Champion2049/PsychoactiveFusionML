@@ -1,4 +1,7 @@
 [build]
+  # Set a simple build command that does nothing for the frontend.
+  # This prevents Netlify from trying to infer and run Node.js-based builds (like node-sass).
+  command = "echo 'No frontend build step required'"
   publish = "templates"  # Directory containing your index.html
   functions = "netlify/functions" # Directory for your Netlify Functions
 
@@ -14,7 +17,3 @@
     "trained_models/**",      # Include all files in this directory and its subdirectories
     "ml_logic.py"             # Include your ML logic file
   ]
-
-# Optional: If you need to install specific Python packages for your functions
-# Netlify will look for a requirements.txt in the functions directory or root.
-# It's best to place it in the functions directory.
