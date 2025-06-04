@@ -6,9 +6,9 @@
   functions = "netlify/functions" # Directory for your Netlify Functions
 
 [functions]
-  # Specify the Python version for Netlify Functions
-  # Ensure this matches the Python version you used for training your models
-  python_version = "3.9" # Or "3.8", "3.10", "3.11" depending on your environment
+  # The 'python_version' property has been removed.
+  # Netlify will now use its default Python version for functions.
+  # This resolves the 'Configuration property functions.python_version must be an object' error.
 
   # Required to include your model directories in the function's deployment package
   # These paths are relative to the project root.
