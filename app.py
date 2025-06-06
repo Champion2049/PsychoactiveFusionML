@@ -15,6 +15,8 @@ FIRST_STAGE_MODELS_DIR = 'saved_models_usage'
 # Define the directory where your second-stage .joblib models are stored (Impulsive, SS regression)
 SECOND_STAGE_MODELS_DIR = 'trained_models'
 
+THIRD_MODEL_DIR = 'third_model'  # Directory for the third model
+
 # --- Mappings for Input Parameters ---
 # These dictionaries map the user-friendly string inputs to their numerical 'Real' values.
 AGE_MAPPING = {
