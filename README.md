@@ -12,6 +12,8 @@ PsychoactiveFusionML is a machine learning project designed to explore the intri
 
     * **Stage 2: Personality Trait Regression:** Predicts Impulsivity and Sensation Seeking scores based on the input personality and demographic data, along with the predicted drug usage from Stage 1.
 
+    * **Stage 3:Classifies substances as "Psychoactive" or "Non-Psychoactive" based on their chemical properties (e.g., Molecular Weight, TPSA, Hydrogen Bond Donors/Acceptors, Functional Groups). This segment bridges chemical structure with biological activity.
+
 * **Intuitive Web Interface:** A clean and responsive Flask web application for easy data input and prediction display.
 
 * **Dynamic Theme Toggle:** Switch between a vibrant light mode and a sleek dark mode for enhanced user experience.
@@ -83,6 +85,7 @@ To get a copy of this project up and running on your local machine for developme
     pandas==2.0.3
     numpy==1.25.2
     joblib==1.3.2
+    xgboost==1.7.6
     ```
 
 4.  **Place your trained models:**
@@ -110,7 +113,10 @@ To get a copy of this project up and running on your local machine for developme
         ├── best_model_Impulsive_LinearRegression.joblib
         └── best_model_SS_RandomForest.joblib
     └── third_model/
-        └── psychoactive_drug_model.joblib
+        ├── psychoactive_drug_model.joblib
+        ├── mlb_psychoactive.joblib
+        ├── scaler_psychoactive.joblib
+        └── selector_psychoactive.joblib
     ```
 
 ## 🏃‍♀️ Usage
@@ -131,7 +137,7 @@ To get a copy of this project up and running on your local machine for developme
 
         * **Drug Usage & Personality Prediction:** Input personality scores and demographic details to get predictions.
 
-        * **Psychoactive Drug Classification:** Explore placeholder information about drug classification (this page is currently for informational purposes).
+        * **Psychoactive Drug Classification:** This page allows you to input chemical properties of a substance to predict its psychoactive classification.
 
 3.  **Toggle Theme:** Use the "Dark Mode" / "Light Mode" button in the top right corner of any page to switch between themes. Your preference will be saved for future visits.
 
@@ -152,6 +158,8 @@ To get a copy of this project up and running on your local machine for developme
 * `saved_models_usage/`: Directory to store the first-stage (drug usage classification) models.
 
 * `trained_models/`: Directory to store the second-stage (Impulsive and SS regression) models.
+
+* `third_model/`: Directory to store the third-stage (psychoactive classification) model and its associated preprocessing artifacts (MultiLabelBinarizer, StandardScaler, SelectKBest).
 
 ## 🤝 Contributing
 
