@@ -12,7 +12,7 @@ PsychoactiveFusionML is a machine learning project designed to explore the intri
 
     * **Stage 2: Personality Trait Regression:** Predicts Impulsivity and Sensation Seeking scores based on the input personality and demographic data, along with the predicted drug usage from Stage 1.
 
-    * **Stage 3:Classifies substances as "Psychoactive" or "Non-Psychoactive" based on their chemical properties (e.g., Molecular Weight, TPSA, Hydrogen Bond Donors/Acceptors, Functional Groups). This segment bridges chemical structure with biological activity.
+    * **Stage 3: Psychoactive Properties Classification:** Classifies substances as "Psychoactive" or "Non-Psychoactive" based on their chemical properties (e.g., Molecular Weight, TPSA, Hydrogen Bond Donors/Acceptors, Functional Groups). This segment bridges chemical structure with biological activity.
 
 * **Intuitive Web Interface:** A clean and responsive Flask web application for easy data input and prediction display.
 
