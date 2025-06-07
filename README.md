@@ -1,4 +1,4 @@
-# PsychoactiveFusionML: Predicting Drug Usage and Personality Traits
+# PsychoactiveFusionML: Predicting Drug Usage, Personality Traits, and Classifying Psychoactive Properties
 
 ## 📊 Project Overview
 
