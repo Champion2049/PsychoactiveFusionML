@@ -3,51 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psychoactive Drug Classification</title>
+    <title>Psychoactive Properties Prediction</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom font import for a more modern feel */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap');
 
         body {
-            font-family: 'Poppins', sans-serif; /* Use Poppins for body text */
-            background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%); /* Deeper, more vibrant purple gradient */
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align items to the start to prevent vertical centering issues on long content */
-            min-height: 100vh; /* Ensure full viewport height */
-            padding: 2rem 1rem; /* Add padding for small screens */
-            box-sizing: border-box; /* Include padding in element's total width and height */
-            color: #333; /* Default text color */
-            position: relative; /* Needed for absolute positioning of the back button and background circles */
-            overflow: hidden; /* Hide overflowing circles */
-            transition: background 0.5s ease, color 0.5s ease; /* Added for smooth theme transition */
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
+            color: #333;
+            position: relative;
+            /* Removed overflow: hidden; to allow scrolling */
+            overflow-y: auto; /* Explicitly allow vertical scrolling */
+            transition: background 0.5s ease, color 0.5s ease;
         }
-        /* Dark mode body background */
+        
         body.dark {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Darker, more subdued gradient */
-            color: #e0e0e0; /* Lighter text for dark mode */
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
         }
 
-        /* Background animated circles for abstract effect - MATCHING HOME.HTML */
+        /* Background animated circles */
         .background-circles {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow: hidden; /* Keep overflow hidden here to contain circles */
             z-index: 0;
         }
         .circle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05); /* Subtle white circles */
+            background: rgba(255, 255, 255, 0.05);
             animation: moveCircles 15s linear infinite;
         }
-        /* Dark mode circles */
         body.dark .circle {
-            background: rgba(255, 255, 255, 0.02); /* Even more subtle in dark mode */
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .circle:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 20%; animation-duration: 18s; }
@@ -65,23 +65,22 @@
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.98); /* Less transparent, more solid look */
-            padding: 4rem; /* Increased padding */
-            border-radius: 1.5rem; /* Rounded corners */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Stronger, deeper shadow */
-            max-width: 800px; /* Wider container */
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 4rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
             width: 100%;
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 2.5rem; /* More space between elements */
-            animation: slideInUp 1s ease-out forwards; /* Slide in from bottom */
+            gap: 2.5rem;
+            animation: slideInUp 1s ease-out forwards;
             position: relative;
-            z-index: 1; /* Ensure container is above background effects */
+            z-index: 1;
         }
-        /* Dark mode container */
         body.dark .container {
-            background-color: rgba(30, 30, 45, 0.98); /* Darker container in dark mode */
+            background-color: rgba(30, 30, 45, 0.98);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
@@ -90,95 +89,209 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Styling for the heading box, similar to prediction_app.html */
+        /* Styling for the heading box */
         .heading-box {
-            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); /* Gradient background for heading box */
-            padding: 2.5rem; /* Padding inside the box */
-            border-radius: 1.5rem; /* Rounded corners for the box */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Shadow for the box */
-            margin-bottom: 2.5rem; /* Space below the heading box */
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            color: white; /* White text for contrast on dark background */
+            color: white;
         }
-        /* Dark mode heading box */
         body.dark .heading-box {
-            background: linear-gradient(135deg, #3a0090 0%, #6a0dad 100%); /* Darker gradient for heading box */
+            background: linear-gradient(135deg, #3a0090 0%, #6a0dad 100%);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
         .heading-box h1 {
-            font-family: 'Montserrat', sans-serif; /* Use Montserrat for headings */
-            font-size: 3.5rem; /* Larger heading */
-            font-weight: 800; /* Extra bold */
-            color: white; /* White color for heading */
-            margin-bottom: 0.5rem; /* Space below heading */
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
             letter-spacing: -0.05em;
             line-height: 1.1;
             text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
         }
-        .heading-box .subtitle { /* Style for subtitle within heading box */
+        .heading-box .subtitle {
             font-family: 'Montserrat', sans-serif;
             font-size: 1.4rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-            margin-bottom: 0; /* No bottom margin, handled by heading-box padding */
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0;
         }
-        .heading-box .hero-image { /* Style for image within heading box */
-            max-width: 100%;
-            height: auto;
+
+        /* Form styling */
+        .form-section {
+            background-color: #f8fafc;
+            padding: 2rem;
             border-radius: 1rem;
-            margin-bottom: 1.5rem; /* Space below image */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        /* Dark mode image in heading box */
-        body.dark .heading-box .hero-image {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        p {
-            font-size: 1.3rem; /* Larger paragraph text */
-            color: #4a5568;
-            line-height: 1.8;
-            margin-bottom: 2.5rem; /* More spacing */
-            max-width: 700px; /* Limit paragraph width for readability */
-            margin-left: auto;
-            margin-right: auto;
-        }
-        /* Dark mode paragraph */
-        body.dark p {
-            color: #c0c0c0;
-        }
-
-        .placeholder-data {
-            background-color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             text-align: left;
-            font-family: 'Fira Code', monospace; /* A nice monospace font */
-            color: #2d3748;
-            white-space: pre-wrap; /* Preserve whitespace and wrap text */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1); /* Inner shadow */
-            border: 1px solid #cbd5e0;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
         }
-        /* Dark mode placeholder data */
-        body.dark .placeholder-data {
-            background-color: #2a2a3a;
-            border-color: #444;
-            color: #e0e0e0;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        body.dark .form-section {
+            background-color: rgba(40, 40, 55, 0.8);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4a00e0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        body.dark .form-section h2 {
+            color: #a78bfa;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        body.dark .form-group label {
+            color: #d1d5db;
+        }
+
+        .form-group input {
+            padding: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+            color: #374151;
+        }
+        body.dark .form-group input {
+            background-color: rgba(55, 55, 70, 0.8);
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8e2de2;
+            box-shadow: 0 0 0 3px rgba(142, 45, 226, 0.1);
+            transform: translateY(-2px);
+        }
+        body.dark .form-group input:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+        }
+
+        .btn-predict {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.3);
+            width: 100%;
+            margin-top: 1rem;
+        }
+        body.dark .btn-predict {
+            background: linear-gradient(135deg, #6a0dad 0%, #3a0090 100%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(142, 45, 226, 0.4);
+        }
+        body.dark .btn-predict:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Results styling */
+        .results {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            padding: 2rem;
+            border-radius: 1rem;
+            border-left: 5px solid #8e2de2;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        body.dark .results {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-left-color: #a78bfa;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .results h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4a00e0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        body.dark .results h2 {
+            color: #a78bfa;
+        }
+
+        .results p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+        body.dark .results p {
+            color: #d1d5db;
+        }
+
+        .results strong {
+            color: #8e2de2;
+            font-weight: 600;
+        }
+        body.dark .results strong {
+            color: #a78bfa;
+        }
+
+        /* Error styling */
+        .error {
+            background-color: #fee2e2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #dc2626;
+        }
+        body.dark .error {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #fca5a5;
+            border-left-color: #fca5a5;
         }
 
         .back-button {
-            position: absolute; /* Position relative to the nearest positioned ancestor (body) */
-            top: 2rem; /* Distance from the top */
-            left: 2rem; /* Distance from the left */
-            background: linear-gradient(45deg, #a78bfa 0%, #8b5cf6 100%); /* Gradient back button */
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(45deg, #a78bfa 0%, #8b5cf6 100%);
             color: white;
             padding: 0.8rem 1.8rem;
             border-radius: 0.75rem;
@@ -186,21 +299,19 @@
             text-decoration: none;
             transition: all 0.3s ease-in-out;
             display: inline-block;
-            z-index: 10; /* Ensure it's above other content */
+            z-index: 10;
             box-shadow: 0 4px 10px rgba(167, 139, 250, 0.3);
         }
-        /* Dark mode back button */
         body.dark .back-button {
             background: linear-gradient(45deg, #6a0dad 0%, #3a0090 100%);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
         .back-button:hover {
-            background: linear-gradient(45deg, #8b5cf6 0%, #a78bfa 100%); /* Reverse gradient on hover */
+            background: linear-gradient(45deg, #8b5cf6 0%, #a78bfa 100%);
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 12px 25px rgba(139, 92, 246, 0.6);
             border: 2px solid rgba(255, 255, 255, 0.5);
         }
-        /* Dark mode back button hover */
         body.dark .back-button:hover {
             background: linear-gradient(45deg, #3a0090 0%, #6a0dad 100%);
             box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
@@ -213,7 +324,7 @@
             top: 1.5rem;
             right: 1.5rem;
             background-color: rgba(255, 255, 255, 0.8); /* More opaque for light mode */
-            backdrop-filter: blur(5px); /* Frosted glass effect */
+            backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             color: #333; /* Default text color for light mode */
             padding: 0.6rem 1rem;
@@ -221,7 +332,7 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease-in-out;
-            z-index: 20; /* Ensure it's on top */
+            z-index: 20;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -229,7 +340,7 @@
             max-width: 160px; /* Constrain max width */
         }
         #theme-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque on hover */
+            background-color: rgba(255, 255, 255, 0.9);
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
@@ -242,7 +353,7 @@
             background-color: rgba(0, 0, 0, 0.4);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
-        /* Sun/Moon icon styling */
+
         .icon-sun, .icon-moon {
             display: inline-block;
             width: 1.2em;
@@ -252,20 +363,17 @@
 
         /* Responsive adjustments */
         @media (max-width: 767px) {
-            h1 {
+            .heading-box h1 {
                 font-size: 2.5rem;
             }
             .subtitle {
                 font-size: 1.2rem;
             }
-            p {
-                font-size: 1.1rem;
-            }
             .container {
                 padding: 2.5rem;
             }
             .back-button {
-                top: 1rem; /* Adjust for smaller screens */
+                top: 1rem;
                 left: 1rem;
                 padding: 0.6rem 1.2rem;
                 font-size: 0.9rem;
@@ -275,7 +383,10 @@
                 right: 1rem;
                 padding: 0.5rem 0.8rem;
                 font-size: 0.9rem;
-                max-width: 140px; /* Smaller max width for smaller screens */
+                max-width: 140px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -296,61 +407,164 @@
     </div>
     <div class="container">
         <div class="heading-box">
-            <h1>Psychoactive Drug Classification</h1>
-            <p class="subtitle">An overview of substance properties and effects.</p>
+            <h1>Psychoactive Properties Prediction</h1>
+            <p class="subtitle">Advanced molecular analysis and prediction system</p>
         </div>
-        <p>This section is dedicated to classifying substances based on their psychoactive properties. While the classification model is under development, you can explore some placeholder information about the types of data we might analyze.</p>
-        <div class="placeholder-data">
-            Potential Data Points for Classification:
-            - Chemical Structure: [Placeholder SMILES String]
-            - Receptor Binding Affinity: [Placeholder Value] nM
-            - Known Effects: [Placeholder List of Effects]
-            - Legal Status: [Placeholder Status]
-            - Historical Usage: [Placeholder Context]
-            - Psychoactive Index: [Placeholder Score 0-10]
+
+        <!-- Error Display (if needed) -->
+        <div class="error" style="display: none;" id="error-message">
+            Error message will appear here
+        </div>
+
+        <div class="form-section">
+            <h2>Input Molecular Features</h2>
+            <form id="prediction-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="drug_name">Drug Name</label>
+                        <input type="text" id="drug_name" name="drug_name" placeholder="e.g., Alprazolam" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="molecular_formula">Molecular Formula</label>
+                        <input type="text" id="molecular_formula" name="molecular_formula" placeholder="e.g., C17H13ClN4" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="molecular_weight">Molecular Weight</label>
+                        <input type="number" step="any" id="molecular_weight" name="molecular_weight" placeholder="e.g., 308.765" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tpsa">TPSA (Topological Polar Surface Area)</label>
+                        <input type="number" step="any" id="tpsa" name="tpsa" placeholder="e.g., 44.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rotatable_bond_count">Rotatable Bond Count</label>
+                        <input type="number" id="rotatable_bond_count" name="rotatable_bond_count" placeholder="e.g., 1" required>
+                    </div>
+                    <!-- NEW INPUTS FOR HBD/HBA -->
+                    <div class="form-group">
+                        <label for="hydrogen_bond_donors">Hydrogen Bond Donors</label>
+                        <input type="number" id="hydrogen_bond_donors" name="hydrogen_bond_donors" placeholder="e.g., 2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hydrogen_bond_acceptors">Hydrogen Bond Acceptors</label>
+                        <input type="number" id="hydrogen_bond_acceptors" name="hydrogen_bond_acceptors" placeholder="e.g., 3" required>
+                    </div>
+                    <!-- KEEP FUNCTIONAL GROUPS AS TEXT INPUT FOR SIMPLICITY AND BACKEND PARSING -->
+                    <div class="form-group">
+                        <label for="functional_groups">Functional Groups</label>
+                        <input type="text" id="functional_groups" name="functional_groups" placeholder="e.g., Amine, Hydroxyl, Ketone" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-predict">Predict Properties</button>
+            </form>
+        </div>
+
+        <!-- Results section (initially hidden) -->
+        <div class="results" style="display: none;" id="results-section">
+            <h2>🔬 Predicted Outputs</h2>
+            <p><strong>Effects:</strong> <span id="predicted-effects">-</span></p>
+            <p><strong>Psychoactivity:</strong> <span id="predicted-psychoactivity">-</span></p>
+            <!--<p><strong>Hydrogen Bond Donors:</strong> <span id="predicted-donors">-</span></p> 
+            <p><strong>Hydrogen Bond Acceptors:</strong> <span id="predicted-acceptors">-</span></p> 
+            <p><strong>SMILES Structure:</strong> <span id="predicted-smiles">-</span></p> -->
         </div>
     </div>
+
     <script>
+        // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
         const sunIcon = document.querySelector('.icon-sun');
         const moonIcon = document.querySelector('.icon-moon');
         const toggleText = document.querySelector('.toggle-text');
 
-        // Function to set the theme
         function setTheme(theme) {
             if (theme === 'dark') {
                 body.classList.add('dark');
                 sunIcon.style.display = 'none';
                 moonIcon.style.display = 'inline-block';
-                toggleText.textContent = 'Dark Mode';
+                toggleText.textContent = 'Dark Mode'; // Indicates button will switch TO Light Mode
                 localStorage.setItem('theme', 'dark');
             } else {
                 body.classList.remove('dark');
                 sunIcon.style.display = 'inline-block';
                 moonIcon.style.display = 'none';
-                toggleText.textContent = 'Light Mode';
+                toggleText.textContent = 'Light Mode'; // Indicates button will switch TO Dark Mode
                 localStorage.setItem('theme', 'light');
             }
         }
 
-        // Check for saved theme preference on load
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             setTheme(savedTheme);
         } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            // Default to system preference if no theme is saved
             setTheme('dark');
         } else {
-            setTheme('light'); // Default to light mode
+            setTheme('light');
         }
 
-        // Toggle theme on button click
         themeToggle.addEventListener('click', () => {
             if (body.classList.contains('dark')) {
                 setTheme('light');
             } else {
                 setTheme('dark');
+            }
+        });
+
+        // Form submission functionality
+        document.getElementById('prediction-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.querySelector('.btn-predict');
+            const originalText = submitBtn.innerHTML;
+            const errorMessageDiv = document.getElementById('error-message');
+            const resultsSection = document.getElementById('results-section');
+
+            // Reset UI
+            errorMessageDiv.style.display = 'none';
+            resultsSection.style.display = 'none';
+            submitBtn.innerHTML = '🔄 Analyzing...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(this);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            try {
+                const response = await fetch('/predict_psychoactive', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    errorMessageDiv.textContent = result.error || 'An unknown error occurred during prediction.';
+                    errorMessageDiv.style.display = 'block';
+                    console.error('API Error:', result);
+                } else {
+                    document.getElementById('predicted-effects').textContent = result.predicted_effects;
+                    document.getElementById('predicted-psychoactivity').textContent = result.predicted_psychoactivity;
+                    document.getElementById('predicted-donors').textContent = result.predicted_donors;
+                    document.getElementById('predicted-acceptors').textContent = result.predicted_acceptors;
+                    document.getElementById('predicted-smiles').textContent = result.predicted_smiles;
+                    
+                    resultsSection.style.display = 'block';
+                    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to results
+                }
+
+            } catch (error) {
+                errorMessageDiv.textContent = 'Network error or unable to reach server. Please try again.';
+                errorMessageDiv.style.display = 'block';
+                console.error('Fetch error:', error);
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
         });
     </script>

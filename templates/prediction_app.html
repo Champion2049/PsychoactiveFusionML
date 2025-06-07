@@ -21,7 +21,7 @@
             box-sizing: border-box; /* Include padding in element's total width and height */
             color: #333; /* Default text color */
             position: relative; /* Needed for absolute positioning of the back button and theme toggle */
-            /* Removed overflow: hidden; to allow scrolling */
+            overflow-y: auto; /* Explicitly allow vertical scrolling */
             transition: background 0.5s ease, color 0.5s ease; /* Added for smooth theme transition */
         }
         /* Dark mode body background */
@@ -164,15 +164,47 @@
             color: #c0c0c0;
         }
 
-        input[type="number"], select {
+        input[type="number"],
+        input[type="text"] {
             width: 100%;
             padding: 0.9rem 1.2rem; /* More padding */
-            border: 1px solid #cbd5e0; /* Light gray border */
+            border: 2px solid #e5e7eb; /* Changed to 2px border */
             border-radius: 0.75rem; /* Rounded input fields */
             font-size: 1.1rem; /* Larger font size */
-            color: #2d3748; /* Dark text for input */
-            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
-            background-color: white; /* Ensure select has white background */
+            color: #374151; /* Dark text for input */
+            transition: all 0.3s ease; /* More general transition */
+            background-color: white; /* Ensure white background */
+            /* No dropdown arrow properties for number/text inputs */
+        }
+        body.dark input[type="number"],
+        body.dark input[type="text"] {
+            background-color: rgba(55, 55, 70, 0.8); /* Darker background */
+            border-color: #4b5563; /* Darker border */
+            color: #e5e7eb; /* Lighter text */
+        }
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #8e2de2; /* Deeper purple border on focus */
+            box-shadow: 0 0 0 3px rgba(142, 45, 226, 0.1); /* Lighter shadow */
+            transform: translateY(-2px); /* Slight lift */
+        }
+        body.dark input[type="number"]:focus,
+        body.dark input[type="text"]:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+        }
+
+        /* Specific styling for select dropdowns to keep custom arrow */
+        select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            color: #374151;
+            transition: all 0.3s ease;
+            background-color: white;
             appearance: none; /* Remove default select arrow */
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -182,53 +214,51 @@
             background-size: 1.5em 1.5em;
             padding-right: 2.5rem; /* Make space for custom arrow */
         }
-        /* Dark mode inputs */
-        body.dark input[type="number"], body.dark select {
-            background-color: #333; /* Darker background */
-            border-color: #555; /* Darker border */
-            color: #e0e0e0; /* Lighter text */
+        body.dark select {
+            background-color: rgba(55, 55, 70, 0.8);
+            border-color: #4b5563;
+            color: #e5e7eb;
         }
-        input[type="number"]:focus, select:focus {
+        select:focus {
             outline: none;
-            border-color: #8e2de2; /* Deeper purple border on focus */
-            box-shadow: 0 0 0 4px rgba(142, 45, 226, 0.3); /* More prominent shadow on focus */
+            border-color: #8e2de2;
+            box-shadow: 0 0 0 3px rgba(142, 45, 226, 0.1);
+            transform: translateY(-2px);
         }
-        /* Dark mode input focus */
-        body.dark input[type="number"]:focus, body.dark select:focus {
-            border-color: #b388ff;
-            box-shadow: 0 0 0 4px rgba(179, 136, 255, 0.3);
+        body.dark select:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
         }
 
-        button {
-            background: linear-gradient(45deg, #8e2de2 0%, #4a00e0 100%); /* Gradient button */
+
+        /* The btn-predict styling copied directly from your provided snippet */
+        .btn-predict {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
             color: white;
-            padding: 1.2rem 2.5rem; /* Larger button */
-            border-radius: 0.75rem;
-            font-weight: 700;
-            font-size: 1.25rem;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            padding: 1rem 2rem;
             border: none;
-            width: 100%; /* Full width button */
-            box-shadow: 0 6px 15px rgba(74, 0, 224, 0.4); /* Stronger button shadow */
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(142, 45, 226, 0.3);
+            width: 100%;
+            margin-top: 1rem;
         }
-        /* Dark mode button */
-        body.dark button {
-            background: linear-gradient(45deg, #3a0090 0%, #6a0dad 100%); /* Darker gradient for buttons */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        body.dark .btn-predict {
+            background: linear-gradient(135deg, #6a0dad 0%, #3a0090 100%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
         }
-        button:hover {
-            background: linear-gradient(45deg, #4a00e0 0%, #8e2de2 100%); /* Reverse gradient on hover */
-            transform: translateY(-3px) scale(1.02); /* More pronounced lift and slight scale */
-            box-shadow: 0 12px 25px rgba(74, 0, 224, 0.6); /* Even stronger shadow on hover */
-            border: 2px solid rgba(255, 255, 255, 0.5); /* Subtle white border on hover */
+
+        .btn-predict:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(142, 45, 226, 0.4);
         }
-        /* Dark mode button hover */
-        body.dark button:hover {
-            background: linear-gradient(45deg, #6a0dad 0%, #3a0090 100%);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+        body.dark .btn-predict:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
         }
+
 
         .message-box {
             padding: 1.2rem;
@@ -446,6 +476,7 @@
                 grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
                 gap: 2rem; /* More gap */
             }
+            /* Make the button span two columns on larger screens */
             .form-grid button {
                 grid-column: span 2;
                 width: auto;
@@ -535,50 +566,34 @@
     <div class="container">
         <div class="heading-box"> <!-- Heading box with new styling -->
             <h1>Drug Usage & Personality Prediction</h1>
-            <p class="subtitle">Enter your details to receive personalized insights.</p> <!-- Added subtitle -->
+            <p class="subtitle">Enter details to receive personalised insights.</p> <!-- Added subtitle -->
         </div>
 
         <!-- Message Box for errors or info -->
-        {% if error %}
-            <div class="message-box error">
-                {{ error }}
-            </div>
-        {% elif not models_loaded %}
-            <div class="message-box info">
-                Loading models failed. Please ensure your 'saved_models_usage' and 'trained_models' directories exist and contain .joblib files.
-            </div>
-        {% elif model_names %}
-            <div class="message-box info">
-                First-stage models loaded successfully for: {{ model_names | join(', ') }}
-            </div>
-        {% endif %}
+        <div id="message-box" class="message-box" style="display: none;">
+        </div>
 
-        <form action="/predict" method="post" class="space-y-6">
+        <form id="prediction-form" class="space-y-6">
             <div class="form-grid">
                 <div class="input-group">
                     <label for="n_score">Nscore:</label>
-                    <input type="number" id="n_score" name="n_score" step="any" required
-                           value="{{ n_score if n_score is not none else '' }}">
+                    <input type="number" id="n_score" name="n_score" step="any" required placeholder="-1.45 to 2.57">
                 </div>
                 <div class="input-group">
                     <label for="e_score">Escore:</label>
-                    <input type="number" id="e_score" name="e_score" step="any" required
-                           value="{{ e_score if e_score is not none else '' }}">
+                    <input type="number" id="e_score" name="e_score" step="any" required placeholder="-3.27 to 3.79">
                 </div>
                 <div class="input-group">
                     <label for="a_score">Ascore:</label>
-                    <input type="number" id="a_score" name="a_score" step="any" required
-                           value="{{ a_score if a_score is not none else '' }}">
+                    <input type="number" id="a_score" name="a_score" step="any" required placeholder="-3.46 to 3.40">
                 </div>
                 <div class="input-group">
                     <label for="o_score">Oscore:</label>
-                    <input type="number" id="o_score" name="o_score" step="any" required
-                           value="{{ o_score if o_score is not none else '' }}">
+                    <input type="number" id="o_score" name="o_score" step="any" required placeholder="-3.27 to 2.90">
                 </div>
                 <div class="input-group">
                     <label for="c_score">Cscore:</label>
-                    <input type="number" id="c_score" name="c_score" step="any" required
-                           value="{{ c_score if c_score is not none else '' }}">
+                    <input type="number" id="c_score" name="c_score" step="any" required placeholder="-3.16 to 3.09">
                 </div>
 
                 <!-- New Input Parameters -->
@@ -586,106 +601,95 @@
                     <label for="age">Age:</label>
                     <select id="age" name="age" required>
                         <option value="">Select Age</option>
-                        {% for user_input, real_value in mappings.age.items() %}
-                            <option value="{{ user_input }}" {% if age_selected == user_input %}selected{% endif %}>
-                                {{ user_input }}
-                            </option>
-                        {% endfor %}
+                        <option value="18-24">18-24</option>
+                        <option value="25-34">25-34</option>
+                        <option value="35-44">35-44</option>
+                        <option value="45-54">45-54</option>
+                        <option value="55-64">55-64</option>
+                        <option value="65+">65+</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label for="gender">Gender:</label>
                     <select id="gender" name="gender" required>
                         <option value="">Select Gender</option>
-                        {% for user_input, real_value in mappings.gender.items() %}
-                            <option value="{{ user_input }}" {% if gender_selected == user_input %}selected{% endif %}>
-                                {{ user_input }}
-                            </option>
-                        {% endfor %}
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label for="education">Education:</label>
                     <select id="education" name="education" required>
                         <option value="">Select Education</option>
-                        {% for user_input, real_value in mappings.education.items() %}
-                            <option value="{{ user_input }}" {% if education_selected == user_input %}selected{% endif %}>
-                                {{ user_input }}
-                            </option>
-                        {% endfor %}
+                        <option value="Left school before 16 years">Left school before 16 years</option>
+                        <option value="Left school at 16 years">Left school at 16 years</option>
+                        <option value="Left school at 17 years">Left school at 17 years</option>
+                        <option value="Left school at 18 years">Left school at 18 years</option>
+                        <option value="Some college or university, no certificate or degree">Some college or university, no certificate or degree</option>
+                        <option value="Professional certificate/ diploma">Professional certificate/ diploma</option>
+                        <option value="University degree">University degree</option>
+                        <option value="Masters degree">Masters degree</option>
+                        <option value="Doctorate degree">Doctorate degree</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label for="country">Country:</label>
                     <select id="country" name="country" required>
                         <option value="">Select Country</option>
-                        {% for user_input, real_value in mappings.country.items() %}
-                            <option value="{{ user_input }}" {% if country_selected == user_input %}selected{% endif %}>
-                                {{ user_input }}
-                            </option>
-                        {% endfor %}
+                        <option value="Australia">Australia</option>
+                        <option value="Canada">Canada</option>
+                        <option value="New Zealand">New Zealand</option>
+                        <option value="Other">Other</option>
+                        <option value="Republic of Ireland">Republic of Ireland</option>
+                        <option value="UK">UK</option>
+                        <option value="USA">USA</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label for="ethinicity">Ethinicity:</label>
                     <select id="ethinicity" name="ethinicity" required>
                         <option value="">Select Ethinicity</option>
-                        {% for user_input, real_value in mappings.ethinicity.items() %}
-                            <option value="{{ user_input }}" {% if ethinicity_selected == user_input %}selected{% endif %}>
-                                {{ user_input }}
-                            </option>
-                        {% endfor %}
+                        <option value="Asian">Asian</option>
+                        <option value="Black">Black</option>
+                        <option value="Mixed-Black/Asian">Mixed-Black/Asian</option>
+                        <option value="Mixed-White/Asian">Mixed-White/Asian</option>
+                        <option value="Mixed-White/Black">Mixed-White/Black</option>
+                        <option value="Other">Other</option>
+                        <option value="White">White</option>
                     </select>
                 </div>
             </div>
-            <button type="submit">Get Predictions</button>
+            <button type="submit" class="btn-predict">Get Predictions</button>
         </form>
 
-        <!-- Display Prediction Results -->
-        {% if predictions %}
+        <!-- Prediction Results Section -->
+        <div id="results-display" style="display: none;">
             <div class="results-section">
                 <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">First Stage: Drug Usage Predictions</h2>
-                <div class="current-inputs">
-                    Current Inputs:<br>
-                    Nscore: <span>{{ n_score }}</span>, Escore: <span>{{ e_score }}</span>, Ascore: <span>{{ a_score }}</span>, Oscore: <span>{{ o_score }}</span>, Cscore: <span>{{ c_score }}</span><br>
-                    Age: <span>{{ age_selected }}</span>, Gender: <span>{{ gender_selected }}</span>, Education: <span>{{ education_selected }}</span>, Country: <span>{{ country_selected }}</span>, Ethinicity: <span>{{ ethinicity_selected }}</span>
+                <div id="current-inputs-display" class="current-inputs">
+                    <!-- Inputs will be dynamically inserted here by JavaScript -->
                 </div>
-                <div class="results-grid">
-                    {% for drug_name, prediction_result in predictions.items() %}
-                        <div class="prediction-item">
-                            <strong>{{ drug_name }}</strong>
-                            <span class="
-                                {% if 'Takes Drug' in prediction_result %} takes-drug
-                                {% elif 'Does Not Take Drug' in prediction_result %} does-not-take-drug
-                                {% else %} bg-gray-500 /* Default for error messages */
-                                {% endif %}
-                            ">
-                                {{ prediction_result }}
-                            </span>
-                        </div>
-                    {% endfor %}
+                <div id="drug-predictions-grid" class="results-grid">
+                    <!-- Drug predictions will be dynamically inserted here by JavaScript -->
                 </div>
             </div>
-        {% endif %}
 
-        {% if impulsive_prediction or ss_prediction or second_stage_errors %}
             <div class="results-section">
                 <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Second Stage: Personality Trait Predictions</h2>
-                {% if second_stage_errors %}
-                    <div class="message-box error">
-                        {% for error in second_stage_errors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                <div id="second-stage-errors-display" class="message-box error" style="display: none;">
+                    <!-- Second stage errors will be dynamically inserted here by JavaScript -->
+                </div>
                 <div class="text-center text-lg font-semibold text-gray-700 space-y-2">
-                    <p>Impulsive Score: <span class="text-blue-600">{{ impulsive_prediction }}</span></p>
-                    <p>SS (Sensation Seeking) Score: <span class="text-blue-600">{{ ss_prediction }}</span></p>
+                    <p>Impulsive Score: <span id="impulsive-score" class="text-blue-600">N/A</span></p>
+                    <p>SS (Sensation Seeking) Score: <span id="ss-score" class="text-blue-600">N/A</span></p>
                 </div>
             </div>
-        {% endif %}
+        </div>
+
     </div>
+
     <script>
+        // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
         const sunIcon = document.querySelector('.icon-sun');
@@ -698,13 +702,13 @@
                 body.classList.add('dark');
                 sunIcon.style.display = 'none';
                 moonIcon.style.display = 'inline-block';
-                toggleText.textContent = 'Dark Mode';
+                toggleText.textContent = 'Dark Mode'; // Indicates button will switch TO Light Mode
                 localStorage.setItem('theme', 'dark');
             } else {
                 body.classList.remove('dark');
                 sunIcon.style.display = 'inline-block';
                 moonIcon.style.display = 'none';
-                toggleText.textContent = 'Light Mode';
+                toggleText.textContent = 'Light Mode'; // Indicates button will switch TO Dark Mode
                 localStorage.setItem('theme', 'light');
             }
         }
@@ -727,6 +731,120 @@
             } else {
                 setTheme('dark');
             }
+        });
+
+        document.getElementById('prediction-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            // Display loading indicator
+            const submitButton = form.querySelector('.btn-predict'); // Changed selector to .btn-predict
+            submitButton.textContent = 'Predicting...';
+            submitButton.disabled = true;
+
+            // Clear previous results and errors
+            document.getElementById('results-display').style.display = 'none';
+            document.getElementById('message-box').style.display = 'none';
+            document.getElementById('drug-predictions-grid').innerHTML = '';
+            document.getElementById('second-stage-errors-display').innerHTML = '';
+            document.getElementById('second-stage-errors-display').style.display = 'none';
+            document.getElementById('impulsive-score').textContent = 'N/A';
+            document.getElementById('ss-score').textContent = 'N/A';
+
+
+            try {
+                // Send data to Flask backend
+                const response = await fetch('/predict', { // Changed to /predict route for Flask
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json' // Flask expects JSON for request.get_json()
+                    },
+                    body: JSON.stringify(data) // Send as JSON string
+                });
+
+                const result = await response.json(); // Assuming Flask returns JSON
+
+                if (response.ok) {
+                    // Handle successful prediction
+                    document.getElementById('results-display').style.display = 'block';
+
+                    // Display current inputs
+                    const inputs = result.input_values;
+                    document.getElementById('current-inputs-display').innerHTML = `
+                        Current Inputs:<br>
+                        Nscore: <span>${inputs.n_score}</span>, Escore: <span>${inputs.e_score}</span>, Ascore: <span>${inputs.a_score}</span>, Oscore: <span>${inputs.o_score}</span>, Cscore: <span>${inputs.c_score}</span><br>
+                        Age: <span>${inputs.age_selected}</span>, Gender: <span>${inputs.gender_selected}</span>, Education: <span>${inputs.education_selected}</span>, Country: <span>${inputs.country_selected}</span>, Ethinicity: <span>${inputs.ethinicity_selected}</span>
+                    `;
+
+                    // Display drug predictions
+                    const drugPredictionsGrid = document.getElementById('drug-predictions-grid');
+                    for (const drugName in result.predictions) {
+                        const predictionResult = result.predictions[drugName];
+                        const spanClass = predictionResult.includes('Takes Drug') ? 'takes-drug' : (predictionResult.includes('Does Not Take Drug') ? 'does-not-take-drug' : 'bg-gray-500');
+                        drugPredictionsGrid.innerHTML += `
+                            <div class="prediction-item">
+                                <strong>${drugName}</strong>
+                                <span class="${spanClass}">${predictionResult}</span>
+                            </div>
+                        `;
+                    }
+
+                    // Display Impulsive and SS scores
+                    document.getElementById('impulsive-score').textContent = result.impulsive_prediction;
+                    document.getElementById('ss-score').textContent = result.ss_prediction;
+
+                    // Display second stage errors if any
+                    if (result.second_stage_errors && result.second_stage_errors.length > 0) {
+                        const errorDisplay = document.getElementById('second-stage-errors-display');
+                        errorDisplay.style.display = 'block';
+                        errorDisplay.innerHTML = ''; // Clear previous errors
+                        result.second_stage_errors.forEach(err => {
+                            errorDisplay.innerHTML += `<p>${err}</p>`;
+                        });
+                    }
+
+                    document.getElementById('results-display').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                } else {
+                    // Handle API errors
+                    const messageBox = document.getElementById('message-box');
+                    messageBox.className = 'message-box error';
+                    messageBox.textContent = result.error || 'An unknown error occurred during prediction.';
+                    messageBox.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                const messageBox = document.getElementById('message-box');
+                messageBox.className = 'message-box error';
+                messageBox.textContent = `Network error or unexpected response: ${error.message}`;
+                messageBox.style.display = 'block';
+            } finally {
+                // Reset button state
+                submitButton.textContent = 'Get Predictions';
+                submitButton.disabled = false;
+            }
+        });
+
+        // Initialize form fields with empty values on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // These placeholders already exist in the HTML, no need to set them via JS
+            // document.getElementById('n_score').value = '';
+            // document.getElementById('e_score').value = '';
+            // document.getElementById('a_score').value = '';
+            // document.getElementById('o_score').value = '';
+            // document.getElementById('c_score').value = '';
+            document.getElementById('age').value = '';
+            document.getElementById('gender').value = '';
+            document.getElementById('education').value = '';
+            document.getElementById('country').value = '';
+            document.getElementById('ethinicity').value = '';
         });
     </script>
 </body>
