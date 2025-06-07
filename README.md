@@ -2,7 +2,7 @@
 
 ## 📊 Project Overview
 
-PsychoactiveFusionML is a machine learning project designed to explore the intricate relationships between an individual's personality traits and their patterns of psychoactive substance use. Leveraging a two-stage predictive modeling approach, this application aims to provide insights into potential drug usage based on personality and demographic data, and subsequently predict specific behavioral traits like Impulsivity and Sensation Seeking. The project features a user-friendly web interface built with Flask, allowing users to input their data and receive predictions.
+PsychoactiveFusionML is a sophisticated machine learning project designed to unravel the intricate relationships between an individual's personality traits and their patterns of psychoactive substance use, and the fundamental chemical properties that define psychoactive compounds. Leveraging a multi-stage predictive modeling approach, this application provides comprehensive insights into potential drug usage based on personality and demographic data, predicts specific behavioral traits, and offers a classification framework for psychoactive substances. The project features a user-friendly, visually engaging web interface built with Flask, allowing users to interact with the models and receive predictions.
 
 ## ✨ Features
 
