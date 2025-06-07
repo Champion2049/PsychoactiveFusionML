@@ -6,20 +6,23 @@
     <title>Psychoactive Fusion ML - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom font import for a more modern feel */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap');
+        /* Custom font imports for a modern and elegant feel */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&family=Playfair+Display:wght@700;800;900&display=swap');
 
         body {
             font-family: 'Poppins', sans-serif; /* Use Poppins for body text */
             background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%); /* Deeper, more vibrant purple gradient */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* Center container horizontally within body */
             min-height: 100vh;
             padding: 2rem;
             box-sizing: border-box;
             color: #333; /* Default text color */
             position: relative; /* Needed for absolute positioning of theme toggle */
+            overflow-y: auto; /* Allow vertical scrolling if content is long */
+            transition: background 0.5s ease, color 0.5s ease;
+            /* text-align: center; Removed from body, handled by flexbox and container */
         }
         /* Dark mode body background */
         body.dark {
@@ -34,9 +37,10 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Stronger, deeper shadow */
             max-width: 900px; /* Wider container for better content flow */
             width: 100%;
-            text-align: center;
+            text-align: center; /* Center inline/inline-block text children */
             display: flex;
             flex-direction: column;
+            align-items: center; /* NEW: Center flex items (children) horizontally */
             gap: 3rem; /* More space between major sections */
             animation: slideInUp 1s ease-out forwards; /* Slide in from bottom */
             overflow: hidden; /* Ensure content doesn't overflow rounded corners */
@@ -88,9 +92,18 @@
             from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        .hero {
+        background-color: #4a00e0;
+        color: white;
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 250px;
+        }
         h1 {
-            font-family: 'Montserrat', sans-serif; /* Use Montserrat for headings */
+            font-family: 'Playfair Display', serif; /* Changed to Playfair Display */
             font-size: 5.5rem; /* Even Bigger heading */
             font-weight: 800; /* Extra bold */
             color: #1a202c;
@@ -125,15 +138,32 @@
             max-width: 700px; /* Limit paragraph width for readability */
             margin-left: auto;
             margin-right: auto;
+            text-align: center; /* Explicitly centered paragraph text */
         }
         /* Dark mode paragraph */
         body.dark p {
             color: #c0c0c0;
         }
 
+        h2 { /* Styling for new h2 headings */
+            font-family: 'Merriweather', sans;
+            font-size: 2.5rem !important;
+            font-weight: 700;
+            color: #4a00e0;
+            margin-bottom: 1.5rem;
+            margin-top: 3rem; /* Space above new sections */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        body.dark h2 {
+            color: #b388ff;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.1);
+        }
+
+
         .button-group {
             display: flex;
             flex-direction: column;
+            align-items: center; /* NEW: Center buttons when in column layout (mobile) */
             gap: 1.8rem; /* More space between buttons */
             margin-top: 2rem;
         }
@@ -187,14 +217,27 @@
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
+        .hero-banner {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        color: white;
+        background-color: #4a00e0;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 1.5rem;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        margin: 0 auto 2.5rem;
+        }
 
         .hero-image, .new-content-image {
+            font-family: 'Playfair Display', sans;
             max-width: 100%;
             height: auto;
             border-radius: 1.5rem; /* More rounded corners for images */
             margin-bottom: 2.5rem; /* Space below images */
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Deeper shadow for images */
             border: 2px solid #8e2de2; /* Subtle border matching gradient */
+            margin: 0 auto; /* NEW: Center images as block elements */
         }
         /* Dark mode images */
         body.dark .hero-image, body.dark .new-content-image {
@@ -286,6 +329,9 @@
                 padding: 0.5rem 0.8rem;
                 font-size: 0.9rem;
             }
+            h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -305,11 +351,20 @@
     </div>
     <div class="container">
         <img src="https://placehold.co/800x250/4a00e0/ffffff?text=PSYCHOACTIVE+FUSION+ML" alt="Psychoactive Fusion ML Banner" class="hero-image">
-        <p class="subtitle">Unveiling the Mind: Personality, Prediction, and Substances</p>
+        <h2>Unveiling the Mind:<br> Personality, Prediction, and Substances</h2>
         <p>Step into an analytical journey where we explore the intricate connections between individual personality traits and patterns of substance use. Our platform provides cutting-edge tools to gain deeper insights into these complex relationships. Discover our core functionalities:</p>
         
         <img src="https://www.rapiddetox.com/wp-content/uploads/2022/04/science-behind-drug-addiction.jpg" alt="Exploring Connections" class="new-content-image">
 
+        <h2>Our Mission</h2>
+        <p>At Psychoactive Fusion ML, our mission is to empower individuals and researchers with advanced machine learning insights into the multifaceted world of psychoactive substances and their human interactions. We aim to contribute to a deeper understanding of these dynamics, fostering informed decisions and promoting well-being.</p>
+
+        <img src="https://placehold.co/800x250/8e2de2/ffffff?text=ADVANCED+INSIGHTS" alt="Advanced Insights" class="new-content-image">
+
+        <h2>What We Offer</h2>
+        <p>Our platform leverages state-of-the-art predictive models trained on diverse datasets. Whether you're curious about the potential links between personality and substance use, or interested in the classification of chemical properties, we provide clear, actionable predictions. All our tools are designed with user experience in mind, ensuring ease of use and insightful results.</p>
+        <p>Join us in exploring the frontier of data-driven understanding in this complex field. We continuously work to refine our models and expand our capabilities to bring you the most accurate and relevant information.</p>
+        
         <div class="button-group">
             <a href="/prediction_app">
                 <span class="block text-2xl font-bold mb-1">Drug Usage & Personality Prediction</span>
