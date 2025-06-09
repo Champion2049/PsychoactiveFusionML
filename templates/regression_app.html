@@ -3,51 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psychoactive Properties Prediction</title>
+    <title>Psychoactive Drug Classification</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom font import for a more modern feel */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;600&display=swap');
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+            font-family: 'Poppins', sans-serif; /* Use Poppins for body text */
+            background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%); /* Deeper, more vibrant purple gradient */
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-            box-sizing: border-box;
-            color: #333;
-            position: relative;
-            /* Removed overflow: hidden; to allow scrolling */
-            overflow-y: auto; /* Explicitly allow vertical scrolling */
-            transition: background 0.5s ease, color 0.5s ease;
+            align-items: flex-start; /* Align items to the start to prevent vertical centering issues on long content */
+            min-height: 100vh; /* Ensure full viewport height */
+            padding: 2rem 1rem; /* Add padding for small screens */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            color: #333; /* Default text color */
+            position: relative; /* Needed for absolute positioning of the back button and background circles */
+            overflow-y: auto; /* Allow scrolling if content overflows */
+            transition: background 0.5s ease, color 0.5s ease; /* Added for smooth theme transition */
         }
-        
+        /* Dark mode body background */
         body.dark {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #e0e0e0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Darker, more subdued gradient */
+            color: #e0e0e0; /* Lighter text for dark mode */
         }
 
-        /* Background animated circles */
+        /* Background animated circles for abstract effect - MATCHING HOME.HTML */
         .background-circles {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Keep overflow hidden here to contain circles */
+            overflow: hidden;
             z-index: 0;
         }
         .circle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05); /* Subtle white circles */
             animation: moveCircles 15s linear infinite;
         }
+        /* Dark mode circles */
         body.dark .circle {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.02); /* Even more subtle in dark mode */
         }
 
         .circle:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 20%; animation-duration: 18s; }
@@ -65,22 +65,22 @@
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.98);
-            padding: 4rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            max-width: 900px;
+            background-color: rgba(255, 255, 255, 0.98); /* Less transparent, more solid look */
+            padding: 3.5rem; /* Increased padding */
+            border-radius: 1.5rem; /* Rounded corners */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* Stronger, deeper shadow */
+            max-width: 900px; /* Wider container */
             width: 100%;
-            text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 2.5rem;
-            animation: slideInUp 1s ease-out forwards;
+            gap: 2.5rem; /* More space between sections */
+            animation: slideInUp 1s ease-out forwards; /* Slide in from bottom */
             position: relative;
-            z-index: 1;
+            z-index: 1; /* Ensure container is above background effects */
         }
+        /* Dark mode container */
         body.dark .container {
-            background-color: rgba(30, 30, 45, 0.98);
+            background-color: rgba(30, 30, 45, 0.98); /* Darker container in dark mode */
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
@@ -89,111 +89,108 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Styling for the heading box */
+        /* Styling for the heading box, similar to prediction_app.html */
         .heading-box {
-            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
-            padding: 2.5rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); /* Gradient background for heading box */
+            padding: 2.5rem; /* Padding inside the box */
+            border-radius: 1.5rem; /* Rounded corners for the box */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Shadow for the box */
+            margin-bottom: 2.5rem; /* Space below the heading box */
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            color: white;
+            color: white; /* White text for contrast on dark background */
         }
+        /* Dark mode heading box */
         body.dark .heading-box {
-            background: linear-gradient(135deg, #3a0090 0%, #6a0dad 100%);
+            background: linear-gradient(135deg, #3a0090 0%, #6a0dad 100%); /* Darker gradient for heading box */
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
         .heading-box h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif; /* Use Montserrat for headings */
+            font-size: 3.5rem; /* Larger heading */
+            font-weight: 800; /* Extra bold */
+            color: white; /* White color for heading */
+            margin-bottom: 0.5rem; /* Space below heading */
             letter-spacing: -0.05em;
             line-height: 1.1;
             text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
         }
-        .heading-box .subtitle {
+        .heading-box .subtitle { /* Style for subtitle within heading box */
             font-family: 'Montserrat', sans-serif;
             font-size: 1.4rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0;
+            color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            margin-bottom: 0; /* No bottom margin, handled by heading-box padding */
         }
-
-        /* Form styling */
-        .form-section {
-            background-color: #f8fafc;
-            padding: 2rem;
+        .heading-box .hero-image { /* Style for image within heading box */
+            max-width: 100%;
+            height: auto;
             border-radius: 1rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            text-align: left;
+            margin-bottom: 1.5rem; /* Space below image */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        body.dark .form-section {
-            background-color: rgba(40, 40, 55, 0.8);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .form-section h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #4a00e0;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        body.dark .form-section h2 {
-            color: #a78bfa;
+        /* Dark mode image in heading box */
+        body.dark .heading-box .hero-image {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        p {
+            font-size: 1.3rem; /* Larger paragraph text */
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 2.5rem; /* More spacing */
+            max-width: 700px; /* Limit paragraph width for readability */
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center; /* Center paragraph text */
+        }
+        /* Dark mode paragraph */
+        body.dark p {
+            color: #c0c0c0;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
+        .input-group {
+            margin-bottom: 1.5rem; /* Space between input fields */
         }
-
-        .form-group label {
+        label {
             font-weight: 600;
-            color: #374151;
+            color: #4a5568;
             margin-bottom: 0.5rem;
-            font-size: 1rem;
+            display: block;
         }
-        body.dark .form-group label {
-            color: #d1d5db;
+        body.dark label {
+            color: #c0c0c0;
         }
 
-        .form-group input {
-            padding: 0.875rem;
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
             border: 2px solid #e5e7eb;
             border-radius: 0.75rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            color: #374151;
             transition: all 0.3s ease;
             background-color: white;
-            color: #374151;
         }
-        body.dark .form-group input {
+        body.dark input[type="number"],
+        body.dark input[type="text"] {
             background-color: rgba(55, 55, 70, 0.8);
             border-color: #4b5563;
             color: #e5e7eb;
         }
-
-        .form-group input:focus {
+        input[type="number"]:focus,
+        input[type="text"]:focus {
             outline: none;
             border-color: #8e2de2;
             box-shadow: 0 0 0 3px rgba(142, 45, 226, 0.1);
             transform: translateY(-2px);
         }
-        body.dark .form-group input:focus {
+        body.dark input[type="number"]:focus,
+        body.dark input[type="text"]:focus {
             border-color: #a78bfa;
             box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
         }
@@ -224,67 +221,73 @@
         body.dark .btn-predict:hover {
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
         }
-
-        /* Results styling */
-        .results {
-            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
-            padding: 2rem;
-            border-radius: 1rem;
-            border-left: 5px solid #8e2de2;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            text-align: left;
-        }
-        body.dark .results {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
-            border-left-color: #a78bfa;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .results h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #4a00e0;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        body.dark .results h2 {
-            color: #a78bfa;
-        }
-
-        .results p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            color: #374151;
-        }
-        body.dark .results p {
-            color: #d1d5db;
-        }
-
-        .results strong {
-            color: #8e2de2;
-            font-weight: 600;
-        }
-        body.dark .results strong {
-            color: #a78bfa;
-        }
-
-        /* Error styling */
-        .error {
-            background-color: #fee2e2;
-            color: #dc2626;
-            padding: 1rem;
+        
+        .message-box {
+            padding: 1.2rem;
             border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            font-weight: 500;
             text-align: center;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #dc2626;
+            font-size: 1.05rem;
         }
-        body.dark .error {
-            background-color: rgba(220, 38, 38, 0.1);
-            color: #fca5a5;
-            border-left-color: #fca5a5;
+        /* Dark mode message boxes */
+        body.dark .message-box.error {
+            background-color: #4a1c1c;
+            color: #ff8888;
+            border-color: #884444;
+        }
+        body.dark .message-box.info {
+            background-color: #1c2c4a;
+            color: #88bbff;
+            border-color: #446688;
+        }
+
+        .results-section {
+            margin-top: 2.5rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content within results section */
+        }
+        body.dark .results-section {
+            border-color: #555;
+        }
+
+        .prediction-output {
+            background-color: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid #edf2f7;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+            width: 100%; /* Take full width within results-section */
+            max-width: 600px; /* Limit max width for readability */
+            margin-top: 2rem;
+            text-align: left; /* Keep text aligned left within output box */
+        }
+        body.dark .prediction-output {
+            background-color: #2a2a3a;
+            border-color: #444;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .prediction-output strong {
+            font-size: 1.2rem;
+            color: #2d3748;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        body.dark .prediction-output strong {
+            color: #e0e0e0;
+        }
+        .prediction-output p {
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: #4a5568;
+            text-align: left; /* Ensure paragraphs within output are left-aligned */
+        }
+        body.dark .prediction-output p {
+            color: #c0c0c0;
         }
 
         .back-button {
@@ -323,10 +326,10 @@
             position: absolute;
             top: 1.5rem;
             right: 1.5rem;
-            background-color: rgba(255, 255, 255, 0.8); /* More opaque for light mode */
+            background-color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #333; /* Default text color for light mode */
+            color: #333;
             padding: 0.6rem 1rem;
             border-radius: 0.75rem;
             cursor: pointer;
@@ -336,8 +339,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            width: max-content; /* Fit content */
-            max-width: 160px; /* Constrain max width */
+            width: max-content;
+            max-width: 160px;
         }
         #theme-toggle:hover {
             background-color: rgba(255, 255, 255, 0.9);
@@ -347,13 +350,13 @@
         body.dark #theme-toggle {
             background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #e0e0e0; /* Lighter text for dark mode */
+            color: #e0e0e0;
         }
         body.dark #theme-toggle:hover {
             background-color: rgba(0, 0, 0, 0.4);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
-
+        /* Sun/Moon icon styling */
         .icon-sun, .icon-moon {
             display: inline-block;
             width: 1.2em;
@@ -362,15 +365,42 @@
         }
 
         /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+                gap: 2rem; /* More gap */
+            }
+            .form-grid button {
+                grid-column: span 2; /* Button spans two columns */
+                width: auto;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 400px;
+            }
+            .container {
+                padding: 4rem;
+            }
+        }
         @media (max-width: 767px) {
-            .heading-box h1 {
+            h1 {
                 font-size: 2.5rem;
             }
             .subtitle {
                 font-size: 1.2rem;
             }
+            p {
+                font-size: 1.1rem;
+            }
             .container {
                 padding: 2.5rem;
+            }
+            .input-group {
+                margin-bottom: 1rem;
+            }
+            .btn-predict {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
             }
             .back-button {
                 top: 1rem;
@@ -384,9 +414,6 @@
                 padding: 0.5rem 0.8rem;
                 font-size: 0.9rem;
                 max-width: 140px;
-            }
-            .form-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -407,77 +434,70 @@
     </div>
     <div class="container">
         <div class="heading-box">
-            <h1>Psychoactive Properties Prediction</h1>
-            <p class="subtitle">Advanced molecular analysis and prediction system</p>
+            <h1>Psychoactive Drug Classification</h1>
+            <p class="subtitle">Predicting psychoactive properties based on chemical structure.</p>
         </div>
 
-        <!-- Error Display (if needed) -->
-        <div class="error" style="display: none;" id="error-message">
-            Error message will appear here
+        <!-- Message Box for errors or info -->
+        <div id="message-box" class="message-box" style="display: none;">
+            <!-- Content will be dynamically inserted by JavaScript -->
         </div>
 
-        <div class="form-section">
-            <h2>Input Molecular Features</h2>
-            <form id="prediction-form">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="drug_name">Drug Name</label>
-                        <input type="text" id="drug_name" name="drug_name" placeholder="e.g., Alprazolam" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="molecular_formula">Molecular Formula</label>
-                        <input type="text" id="molecular_formula" name="molecular_formula" placeholder="e.g., C17H13ClN4" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="molecular_weight">Molecular Weight</label>
-                        <input type="number" step="any" id="molecular_weight" name="molecular_weight" placeholder="e.g., 308.765" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tpsa">TPSA (Topological Polar Surface Area)</label>
-                        <input type="number" step="any" id="tpsa" name="tpsa" placeholder="e.g., 44.1" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="rotatable_bond_count">Rotatable Bond Count</label>
-                        <input type="number" id="rotatable_bond_count" name="rotatable_bond_count" placeholder="e.g., 1" required>
-                    </div>
-                    <!-- NEW INPUTS FOR HBD/HBA -->
-                    <div class="form-group">
-                        <label for="hydrogen_bond_donors">Hydrogen Bond Donors</label>
-                        <input type="number" id="hydrogen_bond_donors" name="hydrogen_bond_donors" placeholder="e.g., 2" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="hydrogen_bond_acceptors">Hydrogen Bond Acceptors</label>
-                        <input type="number" id="hydrogen_bond_acceptors" name="hydrogen_bond_acceptors" placeholder="e.g., 3" required>
-                    </div>
-                    <!-- KEEP FUNCTIONAL GROUPS AS TEXT INPUT FOR SIMPLICITY AND BACKEND PARSING -->
-                    <div class="form-group">
-                        <label for="functional_groups">Functional Groups</label>
-                        <input type="text" id="functional_groups" name="functional_groups" placeholder="e.g., Amine, Hydroxyl, Ketone" required>
-                    </div>
+        <form id="psychoactive-prediction-form" class="space-y-6">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="drug_name">Drug Name (Optional):</label>
+                    <input type="text" id="drug_name" name="drug_name" placeholder="e.g., Aspirin">
                 </div>
-                <button type="submit" class="btn-predict">Predict Properties</button>
-            </form>
-        </div>
+                <div class="input-group">
+                    <label for="molecular_formula">Molecular Formula (Optional):</label>
+                    <input type="text" id="molecular_formula" name="molecular_formula" placeholder="e.g., C9H8O4">
+                </div>
+                <div class="input-group">
+                    <label for="molecular_weight">Molecular Weight:</label>
+                    <input type="number" id="molecular_weight" name="molecular_weight" step="any" required placeholder="e.g., 180.16">
+                </div>
+                <div class="input-group">
+                    <label for="tpsa">TPSA (Topological Polar Surface Area):</label>
+                    <input type="number" id="tpsa" name="tpsa" step="any" required placeholder="e.g., 63.6">
+                </div>
+                <div class="input-group">
+                    <label for="rotatable_bond_count">Rotatable Bond Count:</label>
+                    <input type="number" id="rotatable_bond_count" name="rotatable_bond_count" step="1" required placeholder="e.g., 2">
+                </div>
+                <div class="input-group">
+                    <label for="hydrogen_bond_donors">Hydrogen Bond Donors:</label>
+                    <input type="number" id="hydrogen_bond_donors" name="hydrogen_bond_donors" step="1" required placeholder="e.g., 1">
+                </div>
+                <div class="input-group">
+                    <label for="hydrogen_bond_acceptors">Hydrogen Bond Acceptors:</label>
+                    <input type="number" id="hydrogen_bond_acceptors" name="hydrogen_bond_acceptors" step="1" required placeholder="e.g., 4">
+                </div>
+                <div class="input-group">
+                    <label for="functional_groups">Functional Groups (comma-separated):</label>
+                    <input type="text" id="functional_groups" name="functional_groups" placeholder="e.g., Hydroxyl, Amine">
+                </div>
+            </div>
+            <button type="submit" class="btn-predict">Classify Psychoactive Properties</button>
+        </form>
 
-        <!-- Results section (initially hidden) -->
-        <div class="results" style="display: none;" id="results-section">
-            <h2>🔬 Predicted Outputs</h2>
-            <p><strong>Effects:</strong> <span id="predicted-effects">-</span></p>
-            <p><strong>Psychoactivity:</strong> <span id="predicted-psychoactivity">-</span></p>
-            <!--<p><strong>Hydrogen Bond Donors:</strong> <span id="predicted-donors">-</span></p> 
-            <p><strong>Hydrogen Bond Acceptors:</strong> <span id="predicted-acceptors">-</span></p> 
-            <p><strong>SMILES Structure:</strong> <span id="predicted-smiles">-</span></p> -->
+        <!-- Prediction Results Section -->
+        <div id="results-display" class="results-section" style="display: none;">
+            <h2 class="text-2xl font-bold text-white-800 text-center mb-4">Classification Results</h2>
+            <div class="prediction-output">
+                <p><strong>Predicted Psychoactivity:</strong> <span id="predicted-psychoactivity">N/A</span></p>
+                <p><strong>Predicted Effects:</strong> <span id="predicted-effects">N/A</span></p>
+            </div>
         </div>
     </div>
-
     <script>
-        // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
         const sunIcon = document.querySelector('.icon-sun');
         const moonIcon = document.querySelector('.icon-moon');
         const toggleText = document.querySelector('.toggle-text');
 
+        // Function to set the theme
         function setTheme(theme) {
             if (theme === 'dark') {
                 body.classList.add('dark');
@@ -494,15 +514,18 @@
             }
         }
 
+        // Check for saved theme preference on load
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme) {
             setTheme(savedTheme);
         } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Default to system preference if no theme is saved
             setTheme('dark');
         } else {
-            setTheme('light');
+            setTheme('light'); // Default to light mode
         }
 
+        // Toggle theme on button click
         themeToggle.addEventListener('click', () => {
             if (body.classList.contains('dark')) {
                 setTheme('light');
@@ -511,55 +534,60 @@
             }
         });
 
-        // Form submission functionality
-        document.getElementById('prediction-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.querySelector('.btn-predict');
-            const originalText = submitBtn.innerHTML;
-            const errorMessageDiv = document.getElementById('error-message');
-            const resultsSection = document.getElementById('results-section');
+        document.getElementById('psychoactive-prediction-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-            // Reset UI
-            errorMessageDiv.style.display = 'none';
-            resultsSection.style.display = 'none';
-            submitBtn.innerHTML = '🔄 Analyzing...';
-            submitBtn.disabled = true;
-
-            const formData = new FormData(this);
+            const form = event.target;
+            const formData = new FormData(form);
             const data = {};
             for (let [key, value] of formData.entries()) {
                 data[key] = value;
             }
 
+            // Display loading indicator
+            const submitBtn = form.querySelector('.btn-predict');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Classifying...';
+            submitBtn.disabled = true;
+
+            // Clear previous results and errors
+            const resultsSection = document.getElementById('results-display');
+            resultsSection.style.display = 'none';
+            const errorMessageDiv = document.getElementById('message-box');
+            errorMessageDiv.style.display = 'none';
+            errorMessageDiv.className = 'message-box'; // Reset class
+
             try {
                 const response = await fetch('/predict_psychoactive', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(data),
+                    body: JSON.stringify(data)
                 });
 
                 const result = await response.json();
 
                 if (!response.ok) {
                     errorMessageDiv.textContent = result.error || 'An unknown error occurred during prediction.';
+                    errorMessageDiv.className = 'message-box error'; // Set error class
                     errorMessageDiv.style.display = 'block';
                     console.error('API Error:', result);
                 } else {
                     document.getElementById('predicted-effects').textContent = result.predicted_effects;
                     document.getElementById('predicted-psychoactivity').textContent = result.predicted_psychoactivity;
-                    document.getElementById('predicted-donors').textContent = result.predicted_donors;
-                    document.getElementById('predicted-acceptors').textContent = result.predicted_acceptors;
-                    document.getElementById('predicted-smiles').textContent = result.predicted_smiles;
+                    // Removed the lines that were explicitly requested to be removed
+                    // document.getElementById('predicted-donors').textContent = result.predicted_donors;
+                    // document.getElementById('predicted-acceptors').textContent = result.predicted_acceptors;
+                    // document.getElementById('predicted-smiles').textContent = result.predicted_smiles;
                     
-                    resultsSection.style.display = 'block';
+                    resultsSection.style.display = 'flex'; // Use flex for centering results
                     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to results
                 }
 
             } catch (error) {
                 errorMessageDiv.textContent = 'Network error or unable to reach server. Please try again.';
+                errorMessageDiv.className = 'message-box error'; // Set error class
                 errorMessageDiv.style.display = 'block';
                 console.error('Fetch error:', error);
             } finally {
