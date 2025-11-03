@@ -1,10 +1,10 @@
 # PsychoactiveFusionML: Predicting Drug Usage, Personality Traits, and Classifying Psychoactive Properties
 
-## 📊 Project Overview
+## Project Overview
 
 PsychoactiveFusionML is a sophisticated machine learning project designed to unravel the intricate relationships between an individual's personality traits and their patterns of psychoactive substance use, and the fundamental chemical properties that define psychoactive compounds. Leveraging a multi-stage predictive modeling approach, this application provides comprehensive insights into potential drug usage based on personality and demographic data, predicts specific behavioral traits, and offers a classification framework for psychoactive substances. The project features a user-friendly, visually engaging web interface built with Flask, allowing users to interact with the models and receive predictions.
 
-## ✨ Features
+## Features
 
 * **Two-Stage Prediction System:**
 
@@ -22,7 +22,7 @@ PsychoactiveFusionML is a sophisticated machine learning project designed to unr
 
 * **Real-time Feedback:** Displays predictions directly on the web page.
 
-## 🚀 Technologies Used
+## Technologies Stack
 
 * **Backend:** Python 3, Flask
 
@@ -34,7 +34,7 @@ PsychoactiveFusionML is a sophisticated machine learning project designed to unr
 
 * **Deployment (Conceptual)::** Designed for easy deployment on web servers.
 
-## 📦 Installation
+## Installation Guide
 
 To get a copy of this project up and running on your local machine for development and testing purposes, follow these steps.
 
@@ -119,7 +119,7 @@ To get a copy of this project up and running on your local machine for developme
         └── selector_psychoactive.joblib
     ```
 
-## 🏃‍♀️ Usage
+## Usage
 
 1.  **Run the Flask application:**
 
@@ -141,7 +141,7 @@ To get a copy of this project up and running on your local machine for developme
 
 3.  **Toggle Theme:** Use the "Dark Mode" / "Light Mode" button in the top right corner of any page to switch between themes. Your preference will be saved for future visits.
 
-## 📁 Project Structure
+## Project Structure
 
 * `app.py`: The main Flask application file. It handles routing, loads the ML models, processes user input, performs predictions, and renders HTML templates.
 
@@ -165,10 +165,10 @@ To get a copy of this project up and running on your local machine for developme
 
 Contributions are welcome! If you have suggestions for improvements, new features, or bug fixes, please open an issue or submit a pull request.
 
-## 📄 License
+## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
-## 📸 Screenshots (Coming Soon!)
+## Screenshots (Coming Soon!)
 
 Screenshots of the application in action will be added here to showcase its interface and functionality
