@@ -7,11 +7,8 @@ PsychoactiveFusionML is a sophisticated machine learning project designed to unr
 ## Features
 
 * **Two-Stage Prediction System:**
-
     * **Stage 1: Drug Usage Classification:** Predicts the likelihood of an individual using various psychoactive drugs based on their Big Five personality scores (N, E, O, A, C) and demographic information (Age, Gender, Education, Country, Ethnicity).
-
     * **Stage 2: Personality Trait Regression:** Predicts Impulsivity and Sensation Seeking scores based on the input personality and demographic data, along with the predicted drug usage from Stage 1.
-
     * **Stage 3: Psychoactive Properties Classification:** Classifies substances as "Psychoactive" or "Non-Psychoactive" based on their chemical properties (e.g., Molecular Weight, TPSA, Hydrogen Bond Donors/Acceptors, Functional Groups). This segment bridges chemical structure with biological activity.
 
 * **Intuitive Web Interface:** A clean and responsive Flask web application for easy data input and prediction display.
@@ -46,40 +43,40 @@ To get a copy of this project up and running on your local machine for developme
 
 ### Steps
 
-1.  **Clone the repository:**
+1. **Clone the repository:**
 
-    ```
-    git clone [https://github.com/Champion2049/PsychoactiveFusionML.git](https://github.com/Champion2049/PsychoactiveFusionML.git)
+    ```bash
+    git clone https://github.com/Champion2049/PsychoactiveFusionML.git
     cd PsychoactiveFusionML
     ```
 
-2.  **Create a virtual environment (recommended):**
+2. **Create a virtual environment (recommended):**
 
-    ```
+    ```bash
     python -m venv venv
     ```
 
     * On Windows:
 
-        ```
+        ```powershell
         .\venv\Scripts\activate
         ```
 
     * On macOS/Linux:
 
-        ```
+        ```bash
         source venv/bin/activate
         ```
 
-3.  **Install dependencies:**
+3. **Install dependencies:**
 
-    ```
+    ```bash
     pip install -r requirements.txt
     ```
 
-    *(If `requirements.txt` is not provided, you'll need to create it manually with `Flask`, `scikit-learn`, `pandas`, `numpy`, and any other libraries your models might implicitly depend on, then run `pip install -r requirements.txt`)*. Example `requirements.txt`:
+    *(If `requirements.txt` is not provided, you'll need to create it manually with `Flask`, `scikit-learn`, `pandas`, `numpy`, and any other libraries your models might implicitly depend on, then run `pip install -r requirements.txt`.)* Example `requirements.txt`:
 
-    ```
+    ```text
     Flask==2.3.3
     scikit-learn==1.3.0
     pandas==2.0.3
@@ -88,16 +85,15 @@ To get a copy of this project up and running on your local machine for developme
     xgboost==1.7.6
     ```
 
-4.  **Place your trained models:**
+4. **Place your trained models:**
     This project expects trained machine learning models (`.joblib` files) in specific directories:
 
     * **First-stage drug usage classification models:** Place these in a directory named `saved_models_usage/`. The `app.py` expects them to be named like `model_Drug_1.joblib`, `model_Drug_2.joblib`, etc.
-
     * **Second-stage personality trait regression models:** Place these in a directory named `trained_models/`. The `app.py` expects them to be named like `best_model_Impulsive_*.joblib` and `best_model_SS_*.joblib`.
 
     *Example directory structure after placing models:*
 
-    ```
+    ```text
     PsychoactiveFusionML/
     ├── app.py
     ├── requirements.txt
@@ -109,9 +105,9 @@ To get a copy of this project up and running on your local machine for developme
     │   ├── model_Drug_1.joblib
     │   ├── model_Drug_2.joblib
     │   └── ...
-    └── trained_models/
-        ├── best_model_Impulsive_LinearRegression.joblib
-        └── best_model_SS_RandomForest.joblib
+    ├── trained_models/
+    │   ├── best_model_Impulsive_LinearRegression.joblib
+    │   └── best_model_SS_RandomForest.joblib
     └── third_model/
         ├── psychoactive_drug_model.joblib
         ├── mlb_psychoactive.joblib
@@ -121,25 +117,22 @@ To get a copy of this project up and running on your local machine for developme
 
 ## Usage
 
-1.  **Run the Flask application:**
+1. **Run the Flask application:**
 
-    ```
+    ```bash
     python app.py
     ```
 
     The application will typically start on `http://127.0.0.1:5000/`.
 
-2.  **Navigate the application:**
+2. **Navigate the application:**
 
     * Open your web browser and go to `http://127.0.0.1:5000/`.
-
     * From the home page, you can navigate to:
-
         * **Drug Usage & Personality Prediction:** Input personality scores and demographic details to get predictions.
-
         * **Psychoactive Drug Classification:** This page allows you to input chemical properties of a substance to predict its psychoactive classification.
 
-3.  **Toggle Theme:** Use the "Dark Mode" / "Light Mode" button in the top right corner of any page to switch between themes. Your preference will be saved for future visits.
+3. **Toggle Theme:** Use the "Dark Mode" / "Light Mode" button in the top right corner of any page to switch between themes. Your preference will be saved for future visits.
 
 ## Project Structure
 
@@ -148,11 +141,8 @@ To get a copy of this project up and running on your local machine for developme
 * `requirements.txt`: Lists Python dependencies required for the project.
 
 * `templates/`: Contains all HTML template files for the web interface:
-
     * `home.html`: The main landing page.
-
     * `prediction_app.html`: The page where users input data for drug usage and personality trait prediction.
-
     * `regression_app.html`: The page for psychoactive drug classification.
 
 * `saved_models_usage/`: Directory to store the first-stage (drug usage classification) models.

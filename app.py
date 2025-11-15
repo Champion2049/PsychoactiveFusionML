@@ -1,9 +1,31 @@
 from flask import Flask, render_template, request, jsonify
 import joblib
 import os
+import warnings
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MultiLabelBinarizer # Import MultiLabelBinarizer
+from sklearn.exceptions import InconsistentVersionWarning
+
+
+def _ensure_sklearn_backwards_compatibility():
+    """Patch scikit-learn internals so legacy joblib pipelines remain loadable."""
+    try:
+        from sklearn.compose import _column_transformer
+
+        if not hasattr(_column_transformer, "_RemainderColsList"):
+            class _RemainderColsList(list):
+                """Lightweight shim for scikit-learn < 1.7 remainder metadata objects."""
+
+                pass
+
+            _column_transformer._RemainderColsList = _RemainderColsList
+    except Exception as patch_error:
+        print(f"Warning: Unable to patch scikit-learn compatibility: {patch_error}")
+
+
+_ensure_sklearn_backwards_compatibility()
+warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
 # Initialize the Flask application
 app = Flask(__name__)
